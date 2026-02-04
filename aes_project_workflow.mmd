@@ -1,0 +1,183 @@
+flowchart TD
+    %% Project Initiation Phase
+    A["Project Award/Start"] --> B["Project Planning Phase"]
+    B --> B1["Define Project Scope<br/>• Client requirements<br/>• Deliverables list<br/>• Budget & timeline"]
+    B1 --> B2["Create Work Breakdown Structure<br/>• Major work packages<br/>• Resource allocation<br/>• Risk assessment"]
+    B2 --> B3["Set Up Project in PEP<br/>• Fill project details<br/>• Define success criteria<br/>• Identify stakeholders"]
+    
+    %% Planning Checkpoint
+    B3 --> CHECK1{"Planning Complete?<br/>All deliverables defined?<br/>Stakeholders identified?"}
+    CHECK1 -->|"No"| B1
+    CHECK1 -->|"Yes"| C["Internal Kickoff Meeting"]
+    
+    %% Scope Change Tracking Setup
+    B3 --> SCOPE1["Establish Scope Baseline<br/>• Document initial scope<br/>• Set change control process<br/>• Define approval authority"]
+    SCOPE1 --> SCOPE2["Scope Change Request Form<br/>• Template creation<br/>• Client communication<br/>• Impact assessment criteria"]
+    
+    %% Internal Kickoff
+    C --> C1["Team Assignment<br/>• Assign roles<br/>• Review scope<br/>• Set expectations"]
+    C1 --> C2["Process Setup<br/>• Communication plan<br/>• Review schedule<br/>• Quality standards"]
+    
+    %% Design Review Phase
+    C2 --> D["Design Review Phase"]
+    D --> D1["30% Design Review<br/>• Concept development<br/>• Code compliance check<br/>• Client coordination"]
+    
+    %% 30% Review Checkpoint
+    D1 --> CHECK2{"30% Review Complete?<br/>Client approved?<br/>Technical issues resolved?"}
+    CHECK2 -->|"Issues Found"| ISSUE1["Issue Resolution Process"]
+    ISSUE1 --> ISSUE1A["Document Issue<br/>• Root cause analysis<br/>• Impact assessment<br/>• Solution options"]
+    ISSUE1A --> ISSUE1B["Escalate if Needed<br/>• PM notification<br/>• Client communication<br/>• Scope adjustment"]
+    ISSUE1B --> ISSUE1C["Implement Solution<br/>• Revise design<br/>• Update documentation<br/>• Re-review"]
+    ISSUE1C --> D1
+    CHECK2 -->|"Scope Change Request"| SCOPE3["30% Scope Change Process"]
+    SCOPE3 --> SCOPE3A["Assess Change Impact<br/>• Budget impact analysis<br/>• Timeline impact<br/>• Resource requirements"]
+    SCOPE3A --> SCOPE3B["Client Approval Required<br/>• Formal change request<br/>• Written authorization<br/>• Updated contract"]
+    SCOPE3B --> SCOPE3C["Update Project Documents<br/>• Revised scope<br/>• Updated PEP<br/>• New baseline"]
+    SCOPE3C --> D1
+    CHECK2 -->|"Yes"| D2["60% Design Review"]
+    
+    %% 60% Review Phase
+    D2 --> D2A["Detailed Design<br/>• System calculations<br/>• Equipment selection<br/>• Coordination review"]
+    D2A --> CHECK3{"60% Review Complete?<br/>All disciplines coordinated?<br/>Specifications ready?"}
+    CHECK3 -->|"Issues Found"| ISSUE2["Issue Resolution Process"]
+    ISSUE2 --> ISSUE2A["Technical Issue?"]
+    ISSUE2A -->|"Yes"| ISSUE2B["Engineering Review<br/>• Senior engineer input<br/>• Code compliance<br/>• Best practices"]
+    ISSUE2A -->|"No"| ISSUE2C["Coordination Issue?"]
+    ISSUE2C -->|"Yes"| ISSUE2D["Multi-discipline Meeting<br/>• Conflict resolution<br/>• Interface coordination<br/>• Timeline adjustment"]
+    ISSUE2C -->|"No"| ISSUE2E["Client Issue?"]
+    ISSUE2E -->|"Yes"| ISSUE2F["Client Meeting<br/>• Requirements clarification<br/>• Change management<br/>• Budget impact"]
+    ISSUE2E -->|"No"| ISSUE2G["Other Issue"]
+    ISSUE2G --> ISSUE2H["PM Consultation<br/>• Issue classification<br/>• Resolution strategy<br/>• Resource allocation"]
+    
+    ISSUE2B --> ISSUE2I["Document Resolution<br/>• Update drawings<br/>• Revise calculations<br/>• Record lessons learned"]
+    ISSUE2D --> ISSUE2I
+    ISSUE2F --> ISSUE2I
+    ISSUE2H --> ISSUE2I
+    ISSUE2I --> D2A
+    CHECK3 -->|"Scope Change Request"| SCOPE4["60% Scope Change Process"]
+    SCOPE4 --> SCOPE4A["Detailed Impact Analysis<br/>• Design changes required<br/>• Cost implications<br/>• Schedule adjustments"]
+    SCOPE4A --> SCOPE4B["Multi-discipline Review<br/>• Engineering impact<br/>• Coordination effects<br/>• Construction implications"]
+    SCOPE4B --> SCOPE4C["Client Negotiation<br/>• Formal proposal<br/>• Cost-benefit analysis<br/>• Contract amendment"]
+    SCOPE4C --> SCOPE4D["Documentation Update<br/>• Revised specifications<br/>• Updated drawings<br/>• New project baseline"]
+    SCOPE4D --> D2A
+    CHECK3 -->|"Yes"| D3["90% Design Review"]
+    
+    %% 90% Review Phase
+    D3 --> D3A["Final Design<br/>• Construction documents<br/>• Specifications<br/>• Cost verification"]
+    D3A --> CHECK4{"90% Review Complete?<br/>All QA items checked?<br/>Ready for tender?"}
+    CHECK4 -->|"Issues Found"| ISSUE3["Final Issue Resolution"]
+    ISSUE3 --> ISSUE3A["Critical Issue?"]
+    ISSUE3A -->|"Yes"| ISSUE3B["Emergency Review<br/>• Senior staff involvement<br/>• Client notification<br/>• Timeline impact"]
+    ISSUE3A -->|"No"| ISSUE3C["Standard Resolution<br/>• Quick fix implementation<br/>• Documentation update<br/>• Re-review"]
+    ISSUE3B --> ISSUE3D["Update Project Plan<br/>• Revised timeline<br/>• Budget adjustment<br/>• Client communication"]
+    ISSUE3C --> ISSUE3D
+    ISSUE3D --> D3A
+    CHECK4 -->|"Scope Change Request"| SCOPE5["90% Scope Change Process"]
+    SCOPE5 --> SCOPE5A["Critical Impact Assessment<br/>• Major design changes<br/>• Significant cost impact<br/>• Major schedule delays"]
+    SCOPE5A --> SCOPE5B["Executive Review Required<br/>• Senior management approval<br/>• Client executive involvement<br/>• Strategic decision making"]
+    SCOPE5B --> SCOPE5C["Contract Renegotiation<br/>• Formal contract amendment<br/>• Legal review required<br/>• Insurance implications"]
+    SCOPE5C --> SCOPE5D["Complete Documentation<br/>• Final design changes<br/>• Updated tender documents<br/>• New project baseline"]
+    SCOPE5D --> D3A
+    CHECK4 -->|"Yes"| E["Tender & Contract Phase"]
+    
+    %% Tender and Contract Phase
+    E --> E1["Issued for Tender<br/>• Document distribution<br/>• Bid period management<br/>• Query responses"]
+    E1 --> E1A["RFI Management<br/>• Track all queries<br/>• Response within 48hrs<br/>• Document responses"]
+    E1A --> E1B["Bid Evaluation<br/>• Technical review<br/>• Cost analysis<br/>• Recommendation"]
+    E1B --> E1C["Contract Award<br/>• Client notification<br/>• Contractor selection<br/>• Project transition"]
+    
+    %% Construction Phase
+    E1C --> F["Construction Phase"]
+    F --> F1["Issued for Construction<br/>• Final drawings<br/>• Specifications<br/>• Construction support"]
+    F1 --> F2["Construction Administration<br/>• Site visits<br/>• Shop drawing review<br/>• Change orders"]
+    
+    %% Construction Checkpoints
+    F2 --> CHECK5{"Construction Progress OK?<br/>Quality maintained?<br/>On schedule?"}
+    CHECK5 -->|"Issues Found"| ISSUE4["Construction Issue Resolution"]
+    ISSUE4 --> ISSUE4A["Site Visit Required?"]
+    ISSUE4A -->|"Yes"| ISSUE4B["Immediate Site Visit<br/>• Problem assessment<br/>• Solution implementation<br/>• Documentation"]
+    ISSUE4A -->|"No"| ISSUE4C["Document Review<br/>• Shop drawing analysis<br/>• Specification compliance<br/>• Written response"]
+    ISSUE4B --> ISSUE4D["Client Communication<br/>• Issue notification<br/>• Resolution plan<br/>• Cost impact"]
+    ISSUE4C --> ISSUE4D
+    ISSUE4D --> F2
+    CHECK5 -->|"Scope Change Request"| SCOPE6["Construction Scope Change"]
+    SCOPE6 --> SCOPE6A["Field Change Assessment<br/>• Construction impact<br/>• Cost implications<br/>• Schedule effects"]
+    SCOPE6A --> SCOPE6B["Change Order Process<br/>• Contractor notification<br/>• Client approval<br/>• Formal documentation"]
+    SCOPE6B --> SCOPE6C["Implementation<br/>• Revised drawings<br/>• Updated specifications<br/>• Field coordination"]
+    SCOPE6C --> SCOPE6D["As-Built Updates<br/>• Record changes<br/>• Update documentation<br/>• Final verification"]
+    SCOPE6D --> F2
+    CHECK5 -->|"Yes"| F3["Substantial Completion"]
+    
+    %% Final Phase
+    F3 --> G["Project Closeout Phase"]
+    G --> G1["Final Inspection<br/>• System testing<br/>• Code compliance<br/>• Client acceptance"]
+    G1 --> G2["As-Built Documentation<br/>• Record drawings<br/>• O&M manuals<br/>• Warranty documentation"]
+    
+    %% Sustain Phase
+    G2 --> H["Knowledge Capture Phase"]
+    H --> H1["Project Closeout<br/>• Final billing<br/>• Client satisfaction survey<br/>• Project evaluation"]
+    H1 --> H2["Lessons Learned<br/>• Process improvements<br/>• Knowledge capture<br/>• Template updates"]
+    H2 --> H3["Team Feedback<br/>• Performance review<br/>• Skill development<br/>• Process refinement"]
+    H3 --> I["Project Complete"]
+    
+    %% Regular Checkpoints Throughout
+    D1 --> REGULAR1["Weekly Checkpoint<br/>• Progress review<br/>• Issue identification<br/>• Resource check"]
+    D2 --> REGULAR2["Bi-weekly Checkpoint<br/>• Client communication<br/>• Quality review<br/>• Timeline assessment"]
+    D3 --> REGULAR3["Final Checkpoint<br/>• Deliverable review<br/>• Client satisfaction<br/>• Process evaluation"]
+    F2 --> REGULAR4["Monthly Checkpoint<br/>• Construction progress<br/>• Issue tracking<br/>• Client updates"]
+    
+    %% Issue Escalation Path
+    ISSUE1B --> ESCALATE["Escalation Process"]
+    ISSUE2H --> ESCALATE
+    ISSUE3B --> ESCALATE
+    ISSUE4D --> ESCALATE
+    ESCALATE --> ESCALATE1["PM Review<br/>• Issue assessment<br/>• Resource allocation<br/>• Client communication"]
+    ESCALATE1 --> ESCALATE2["Senior Management<br/>• Strategic decision<br/>• Budget approval<br/>• Client relationship"]
+    ESCALATE2 --> ESCALATE3["Resolution Implementation<br/>• Action plan<br/>• Timeline adjustment<br/>• Quality assurance"]
+    ESCALATE3 --> ESCALATE4["Return to Normal Flow"]
+    
+    %% Quality Assurance Integration
+    QA1["QA Checkpoint 1<br/>30% Review"] --> QA1A["Technical Review<br/>• Code compliance<br/>• Best practices<br/>• Coordination"]
+    QA1A --> QA1B["Client Review<br/>• Requirements met<br/>• Budget alignment<br/>• Timeline on track"]
+    
+    QA2["QA Checkpoint 2<br/>60% Review"] --> QA2A["Multi-discipline Review<br/>• Interface coordination<br/>• System integration<br/>• Constructability"]
+    QA2A --> QA2B["Specification Review<br/>• Equipment selection<br/>• Installation requirements<br/>• Maintenance access"]
+    
+    QA3["QA Checkpoint 3<br/>90% Review"] --> QA3A["Final Review<br/>• Document completeness<br/>• Specification accuracy<br/>• Construction readiness"]
+    QA3A --> QA3B["Client Approval<br/>• Final sign-off<br/>• Tender authorization<br/>• Construction permit"]
+    
+    %% Process Integration Points
+    D1 --> QA1
+    D2 --> QA2
+    D3 --> QA3
+    
+    %% Scope Change Tracking Integration
+    SCOPE2 --> D1
+    SCOPE2 --> D2
+    SCOPE2 --> D3
+    SCOPE2 --> F2
+    
+    %% Styling - AES Theme Colors
+    classDef mainPhase fill:#00a389,stroke:#008a73,stroke-width:3px,color:#fff
+    classDef checkpoint fill:#e6f7f4,stroke:#00a389,stroke-width:2px,color:#1a1a1a
+    classDef issue fill:#dc2626,stroke:#991b1b,stroke-width:2px,color:#fff
+    classDef qa fill:#2274A5,stroke:#1e5a7a,stroke-width:2px,color:#fff
+    classDef regular fill:#f59e0b,stroke:#d97706,stroke-width:2px,color:#fff
+    classDef escalation fill:#7c3aed,stroke:#5b21b6,stroke-width:2px,color:#fff
+    classDef scope fill:#8b5cf6,stroke:#6d28d9,stroke-width:2px,color:#fff
+    
+    class B,D,E,F,G,H mainPhase
+    class CHECK1,CHECK2,CHECK3,CHECK4,CHECK5 checkpoint
+    class ISSUE1,ISSUE2,ISSUE3,ISSUE4 issue
+    class ISSUE1A,ISSUE1B,ISSUE1C issue
+    class ISSUE2A,ISSUE2B,ISSUE2C,ISSUE2D,ISSUE2E,ISSUE2F,ISSUE2G,ISSUE2H,ISSUE2I issue
+    class ISSUE3A,ISSUE3B,ISSUE3C,ISSUE3D issue
+    class ISSUE4A,ISSUE4B,ISSUE4C,ISSUE4D issue
+    class SCOPE1,SCOPE2,SCOPE3,SCOPE4,SCOPE5,SCOPE6 scope
+    class SCOPE3A,SCOPE3B,SCOPE3C scope
+    class SCOPE4A,SCOPE4B,SCOPE4C,SCOPE4D scope
+    class SCOPE5A,SCOPE5B,SCOPE5C,SCOPE5D scope
+    class SCOPE6A,SCOPE6B,SCOPE6C,SCOPE6D scope
+    class QA1,QA2,QA3,QA1A,QA1B,QA2A,QA2B,QA3A,QA3B qa
+    class REGULAR1,REGULAR2,REGULAR3,REGULAR4 regular
+    class ESCALATE,ESCALATE1,ESCALATE2,ESCALATE3,ESCALATE4 escalation
