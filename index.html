@@ -1,376 +1,87 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="default">
+<html lang="en" data-theme="aurora">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>AES Engineering — Project Execution Plan (PEP)</title>
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap">
-<link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AES PEP Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-<header>
-  <div class="logo" aria-label="AES logo">AES</div>
-  <div>
-    <h1>AES Engineering — Project Execution Plan</h1>
-    <p>Interactive PEP built on PROCESS methodology: Plan, Review, Own, Communicate, Execute, Serve, Sustain. Use it to align scope, quality, and delivery from kickoff to closeout.</p>
-  </div>
-</header>
-
-<main>
-  <section class="control-panel" aria-labelledby="control">
-    <div class="flex" style="justify-content:space-between;align-items:center;">
-      <h2 id="control">PEP Control Center</h2>
-      <span class="tag">Guided workflow + theme controls</span>
+  <header class="topbar">
+    <div>
+      <p class="eyebrow">AES Engineering</p>
+      <h1>PEP Studio — Multi‑Agent Delivery Interface</h1>
+      <p class="lede">Rebuilt from scratch as a collaborative planning cockpit where project, product, design, delivery, and quality voices iterate together.</p>
     </div>
-    <p class="section-intro">Start here each session. Save, load, and print your plan, then jump to any section or switch to your preferred theme.</p>
-    <div class="control-grid">
-      <div class="control-card">
-        <h3>Quick actions</h3>
-        <div class="actions">
-          <button id="saveBtn" class="secondary">Save to file</button>
-          <button id="loadBtn" class="ghost">Load from file</button>
-          <button id="printBtn" class="ghost">Print or save PDF</button>
-          <button id="resetBtn" class="ghost">Reset</button>
-        </div>
-        <input id="fileInput" type="file" accept=".json" class="hidden" />
-        <div class="callout">Tip: enable Auto save to keep progress in your browser between sessions. Use Save to file to share the plan with your team.</div>
-      </div>
-      <div class="control-card">
-        <h3>Progress overview</h3>
-        <div class="progress-meta">
-          <div class="metric"><b><span id="overallPct">0</span>%</b>Overall completion</div>
-          <div class="metric"><b><span id="checklistPct">0</span>%</b>Checklist status</div>
-          <div class="metric"><b><span id="milestonePct">0</span>%</b>Milestones done</div>
-        </div>
-        <div class="progress-bar"><span id="overallBar"></span></div>
-        <p class="small muted">Completion is calculated from key fields, checklists, and milestones. Update as you progress to keep the plan current.</p>
-        <div class="tip-box">
-          <strong>Suggested flow:</strong>
-          <ol class="list">
-            <li>Complete Plan and Review sections.</li>
-            <li>Confirm PROCESS steps and QA/QC readiness.</li>
-            <li>Align schedule milestones, then review KPIs.</li>
-          </ol>
-        </div>
-      </div>
-      <div class="control-card">
-        <h3>Preferences</h3>
-        <label for="themeSelect">Color theme</label>
-        <select id="themeSelect" class="select">
-          <option value="default">AES Green</option>
+    <div class="top-actions">
+      <label>Theme
+        <select id="themeSelect">
+          <option value="aurora">Aurora</option>
           <option value="midnight">Midnight</option>
-          <option value="sandstone">Sandstone</option>
+          <option value="paper">Paper</option>
         </select>
-        <div class="actions">
-          <label class="pill"><input type="checkbox" id="autoSave"> Auto save to browser</label>
-          <label class="pill"><input type="checkbox" id="compactTog"> Compact print mode</label>
-        </div>
-        <p class="helper">Compact mode reduces spacing for PDF exports and printouts.</p>
-        <div class="toc">
-          <a href="#ov">Jump to Plan <span>1 →</span></a>
-          <a href="#scope">Jump to Review <span>2 →</span></a>
-          <a href="#proc">Jump to Process <span>3 →</span></a>
-          <a href="#sched">Jump to Schedule <span>4 →</span></a>
-          <a href="#qa">Jump to Communicate/Execute <span>5 →</span></a>
-          <a href="#kpi">Jump to Serve/Sustain <span>6 →</span></a>
-        </div>
-      </div>
+      </label>
+      <label class="switch"><input id="autoSave" type="checkbox" /> Auto save</label>
+      <button id="saveBtn">Save JSON</button>
+      <button id="loadBtn" class="ghost">Load JSON</button>
+      <button id="printBtn" class="ghost">Print</button>
+      <button id="resetBtn" class="ghost">Reset</button>
+      <input id="fileInput" class="hidden" type="file" accept=".json" />
     </div>
-  </section>
+  </header>
 
-  <div class="grid">
-    <section aria-labelledby="ov">
-      <div class="section-header">
-        <h2 id="ov">1. P - Plan with Precision</h2>
-        <span class="badge">Required inputs</span>
+  <main class="layout">
+    <aside class="panel">
+      <h2>Program brief</h2>
+      <label>Initiative name<input id="projectName" type="text" placeholder="Campus decarbonization program" /></label>
+      <label>Client / Sponsor<input id="sponsor" type="text" placeholder="BC Housing" /></label>
+      <label>Project manager<input id="manager" type="text" placeholder="Name, P.Eng." /></label>
+      <label>Mission statement<textarea id="mission" placeholder="What outcome will define success?"></textarea></label>
+      <label>Success target date<input id="targetDate" type="date" /></label>
+      <div class="stats">
+        <div><strong id="overallPct">0%</strong><span>Overall completion</span></div>
+        <div><strong id="agentPct">0%</strong><span>Agent approval</span></div>
       </div>
-      <p class="section-intro">Capture the essential project definition, constraints, and baseline expectations. Be specific so downstream decisions are aligned.</p>
-      <div class="row">
-        <div class="field-group">
-          <label>Project name</label>
-          <input id="f_name" type="text" placeholder="Example: Murray Manor Generator Replacement" />
-          <div class="helper">Use the official project title from the proposal or contract.</div>
-        </div>
-        <div class="field-group">
-          <label>Client</label>
-          <input id="f_client" type="text" placeholder="Example: BC Housing" />
-          <div class="helper">Include client department or business unit if relevant.</div>
-        </div>
-        <input id="fileInput" type="file" accept=".json" class="hidden" />
-        <div class="callout">Tip: enable Auto save to keep progress in your browser between sessions. Use Save to file to share the plan with your team.</div>
+      <div class="bar"><span id="overallBar"></span></div>
+    </aside>
+
+    <section class="panel board">
+      <div class="section-title">
+        <h2>Iterative workboard</h2>
+        <p>Each lane mirrors agile ceremonies and PMP controls.</p>
       </div>
-      <div class="row">
-        <div class="field-group">
-          <label>AES project number</label>
-          <input id="f_no" type="text" placeholder="e.g., 24-1234" />
-        </div>
-        <div class="field-group">
-          <label>Project manager</label>
-          <input id="f_pm" type="text" placeholder="Name, P.Eng." />
-          <div class="helper">Primary point of contact responsible for schedule and scope.</div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="field-group">
-          <label>Project type</label>
-          <select id="f_type">
-            <option value="">Select…</option>
-            <option>New build</option>
-            <option>Renovation</option>
-            <option>Tenant improvement</option>
-            <option>Feasibility</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <label>Location</label>
-          <input id="f_loc" type="text" placeholder="City, Province (include site name if multiple)" />
-        </div>
-      </div>
-      <div class="row">
-        <div class="field-group">
-          <label>Budget estimate</label>
-          <input id="f_budget" type="number" placeholder="Project budget in CAD (base + contingency)" />
-          <div class="helper">Use the most recent cost estimate and note if it is preliminary.</div>
-        </div>
-        <div class="field-group">
-          <label>Estimated hours</label>
-          <input id="f_hours" type="number" placeholder="Total estimated hours (all disciplines)" />
-        </div>
-        <div class="callout">Roles included: Project Manager, Scrum Master, PMP Consultant, UX/UI Consultant, Software Developer.</div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Project success criteria & constraints</label>
-        <textarea id="f_summary" placeholder="Define what success looks like, key constraints, and project boundaries."></textarea>
-        <ul class="list">
-          <li>Success criteria (performance, safety, client expectations).</li>
-          <li>Constraints (budget caps, schedule windows, site access).</li>
-          <li>Assumptions requiring confirmation.</li>
-        </ul>
-      </div>
-      <div style="margin-top:10px">
-        <label>Work Breakdown Structure (WBS) Notes</label>
-        <textarea id="f_wbs" placeholder="Key deliverables, phases, and major work packages."></textarea>
-        <div class="helper">Break down by phase (e.g., DD, CD, CA) and include key deliverables.</div>
-      </div>
-      <p class="print-note">Tip: use Control Center actions above to save, print, or reset.</p>
+      <div class="lanes" id="lanes"></div>
+      <button id="addLaneItem" class="secondary">+ Add backlog item</button>
     </section>
 
-    <section aria-labelledby="scope">
-      <div class="section-header">
-        <h2 id="scope">2. R - Review & Reinforce Planning</h2>
-        <span class="badge">Scope alignment</span>
+    <section class="panel">
+      <div class="section-title">
+        <h2>Milestones & risk controls</h2>
       </div>
-      <p class="section-intro">Confirm the scope items included in this contract and add clarifications for anything custom or excluded.</p>
-      <div class="flex small muted">Toggle what is included. Add details in Notes for exclusions or special requirements.</div>
-      <div id="scopeList" class="actions" aria-live="polite">
-        <!-- pills injected by JS -->
-      </div>
-      <div style="margin-top:10px">
-        <label>Detailed scope clarifications</label>
-        <textarea id="scope_notes" placeholder="Add clarifications such as EVEMS testing, BESS feasibility, or utility coordination."></textarea>
-        <div class="helper">Note any owner-provided items, coordination boundaries, and deliverable ownership.</div>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <div class="field-group">
-          <label>Review schedule</label>
-          <select id="review_schedule">
-            <option value="">Select review frequency</option>
-            <option>Weekly</option>
-            <option>Bi-weekly</option>
-            <option>Monthly</option>
-            <option>As needed</option>
-          </select>
-        </div>
-        <div class="field-group">
-          <label>Key stakeholders</label>
-          <input id="stakeholders" type="text" placeholder="Client PM, Architect, Contractor, Authority Having Jurisdiction" />
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Risk assessment & mitigation</label>
-        <textarea id="risk_notes" placeholder="Identify potential risks and mitigation strategies."></textarea>
-        <ul class="list">
-          <li>Top 3 project risks and their triggers.</li>
-          <li>Mitigation actions and responsible owner.</li>
-          <li>Required decisions or approvals.</li>
-        </ul>
-      </div>
-      <div class="field-group">
-        <label>Estimated hours</label>
-        <input id="f_hours" type="number" placeholder="Total estimated hours (all disciplines)" />
-      </div>
-    </div>
-    <div style="margin-top:10px">
-      <label>Project success criteria & constraints</label>
-      <textarea id="f_summary" placeholder="Define what success looks like, key constraints, and project boundaries."></textarea>
-      <ul class="list">
-        <li>Success criteria (performance, safety, client expectations).</li>
-        <li>Constraints (budget caps, schedule windows, site access).</li>
-        <li>Assumptions requiring confirmation.</li>
-      </ul>
-    </div>
-    <div style="margin-top:10px">
-      <label>Work Breakdown Structure (WBS) Notes</label>
-      <textarea id="f_wbs" placeholder="Key deliverables, phases, and major work packages."></textarea>
-      <div class="helper">Break down by phase (e.g., DD, CD, CA) and include key deliverables.</div>
-    </div>
-    <p class="print-note">Tip: use Control Center actions above to save, print, or reset.</p>
-  </section>
+      <div id="milestones" class="milestones"></div>
+      <button id="addMilestone" class="secondary">+ Add milestone</button>
+      <h3>Risk register</h3>
+      <label>Top risks<textarea id="risks" placeholder="Scope drift, late permits, vendor lead times..."></textarea></label>
+      <label>Mitigation plan<textarea id="mitigation" placeholder="Action owners, due dates, contingency budget..."></textarea></label>
+    </section>
 
-  <section aria-labelledby="scope">
-    <div class="section-header">
-      <h2 id="scope">2. Review & Reinforce Planning</h2>
-      <span class="status-pill" id="status-review">Not started</span>
-    </div>
-    <p class="section-intro">Use this checklist to confirm the PROCESS principles are actively managed. Review at each phase gate.</p>
-    <div class="process" id="processSteps">
-      <!-- steps injected by JS -->
-    </div>
-  </section>
+    <section class="panel agents">
+      <div class="section-title">
+        <h2>Agent feedback loop</h2>
+        <p>Do not ship until all represented users are satisfied.</p>
+      </div>
+      <div id="agentBoard"></div>
+      <label>Cross‑agent decision log<textarea id="decisionLog" placeholder="Capture agreements, trade-offs, and final call."></textarea></label>
+    </section>
+  </main>
 
-  <section aria-labelledby="sched">
-    <div class="flex" style="justify-content:space-between;align-items:center;">
-      <h2 id="sched">3. Own & Optimize Schedule</h2>
-        <button id="addM" class="ghost">Add milestone</button>
-      </div>
-      <p class="section-intro">Define key dates and deliverables. Keep milestones measurable with clear outputs.</p>
-      <div class="timeline" id="timeline"></div>
-      <div style="margin-top:8px">
-        <div class="bar"><span id="msBar"></span></div>
-        <div class="small muted">Completion based on milestones checked complete.</div>
-      </div>
-      <div class="row" style="margin-top:15px">
-        <div class="field-group">
-          <label>Actual vs. estimated hours</label>
-          <input id="actual_hours" type="number" placeholder="Actual hours logged" />
-          <div class="helper">Track hours monthly or per phase for accurate efficiency assessment.</div>
-        </div>
-        <div class="field-group">
-          <label>Efficiency rating</label>
-          <select id="efficiency_rating">
-            <option value="">Select efficiency</option>
-            <option>Excellent (95%+)</option>
-            <option>Good (85-94%)</option>
-            <option>Fair (75-84%)</option>
-            <option>Needs improvement (<75%)</option>
-          </select>
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Lessons learned & optimization notes</label>
-        <textarea id="optimization_notes" placeholder="What worked well? What can be improved? Process improvements identified."></textarea>
-        <div class="helper">Capture improvement actions and the owner responsible for follow-through.</div>
-      </div>
-  </section>
+  <footer>
+    <p>PROCESS lens: Plan • Review • Own • Communicate • Execute • Serve • Sustain</p>
+  </footer>
 
-    <section aria-labelledby="qa">
-      <div class="section-header">
-        <h2 id="qa">5. C - Communicate & E - Execute</h2>
-        <span class="badge">Readiness & quality</span>
-      </div>
-      <p class="section-intro">Document communication cadence, decision logs, and QA/QC readiness to keep delivery aligned.</p>
-      <div class="flex small muted">Use checkboxes to track readiness and quality.</div>
-      <div class="process" id="qaList"></div>
-      <hr style="border:none;border-top:1px solid #eee;margin:10px 0" />
-      <div class="row">
-        <div class="field-group">
-          <label>Client communication cadence</label>
-          <input id="cadence" type="text" placeholder="Biweekly coordination call; written update every Friday" />
-          <div class="helper">Include meetings, reports, and signoff checkpoints.</div>
-        </div>
-        <div class="field-group">
-          <label>Change management process</label>
-          <input id="change" type="text" placeholder="Scope Change Request form before work" />
-          <div class="helper">Define decision authority and approval turnaround targets.</div>
-        </div>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <div class="field-group">
-          <label>Documentation standards</label>
-          <input id="doc_standards" type="text" placeholder="AES templates, drawing standards, etc." />
-          <div class="helper">List templates, file naming, and review checklists.</div>
-        </div>
-        <div class="field-group">
-          <label>Execution efficiency tools</label>
-          <input id="efficiency_tools" type="text" placeholder="Software, checklists, automation used" />
-          <div class="helper">Note automation, reusable templates, or modeling tools used.</div>
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Communication log & decisions</label>
-        <textarea id="comm_log" placeholder="Key decisions, client feedback, and important communications."></textarea>
-        <div class="helper">Capture dates, decision owners, and next actions.</div>
-      </div>
-  </section>
-
-  <section aria-labelledby="kpi">
-    <div class="section-header">
-      <h2 id="kpi">6. S1 - Serve with Standards & S2 - Sustain</h2>
-      <span class="badge">Performance & sustainability</span>
-    </div>
-    <p class="section-intro">Track performance outcomes and capture long-term improvements that can be reused on future projects.</p>
-    <div class="kpis">
-      <div class="kpi">
-        <h3>On time deliverables</h3>
-        <div class="value"><input id="kpi_time" type="range" min="0" max="100" value="70" /><span><b id="kpi_time_val">70</b>%</span></div>
-        <div class="bar"><span id="kpi_time_bar" style="width:70%"></span></div>
-      </div>
-      <div class="kpi">
-        <h3>Timesheet compliance</h3>
-        <div class="value"><input id="kpi_ts" type="range" min="0" max="100" value="80" /><span><b id="kpi_ts_val">80</b>%</span></div>
-        <div class="bar"><span id="kpi_ts_bar" style="width:80%"></span></div>
-      </div>
-      <div class="kpi">
-        <h3>Zero rework index</h3>
-        <div class="value"><input id="kpi_rw" type="range" min="0" max="100" value="85" /><span><b id="kpi_rw_val">85</b>%</span></div>
-        <div class="bar"><span id="kpi_rw_bar" style="width:85%"></span></div>
-      </div>
-      <div class="kpi">
-        <h3>Client satisfaction</h3>
-        <div class="value"><input id="kpi_cs" type="range" min="0" max="10" value="8" /><span><b id="kpi_cs_val">8</b>/10</span></div>
-        <div class="bar"><span id="kpi_cs_bar" style="width:80%"></span></div>
-      </div>
-    </div>
-    <div class="kpis" style="margin-top:15px">
-      <div class="kpi">
-        <h3>AES standards compliance</h3>
-        <div class="value"><input id="kpi_standards" type="range" min="0" max="100" value="90" /><span><b id="kpi_standards_val">90</b>%</span></div>
-        <div class="bar"><span id="kpi_standards_bar" style="width:90%"></span></div>
-      </div>
-      <div class="kpi">
-        <h3>Process improvement adoption</h3>
-        <div class="value"><input id="kpi_improvement" type="range" min="0" max="100" value="75" /><span><b id="kpi_improvement_val">75</b>%</span></div>
-        <div class="bar"><span id="kpi_improvement_bar" style="width:75%"></span></div>
-      </div>
-      <div class="kpi">
-        <h3>Knowledge capture</h3>
-        <div class="value"><input id="kpi_knowledge" type="range" min="0" max="100" value="80" /><span><b id="kpi_knowledge_val">80</b>%</span></div>
-        <div class="bar"><span id="kpi_knowledge_bar" style="width:80%"></span></div>
-      </div>
-      <div class="kpi">
-        <h3>Team satisfaction</h3>
-        <div class="value"><input id="kpi_team" type="range" min="0" max="10" value="8" /><span><b id="kpi_team_val">8</b>/10</span></div>
-        <div class="bar"><span id="kpi_team_bar" style="width:80%"></span></div>
-      </div>
-    </div>
-    <div style="margin-top:15px">
-      <label>Sustainability & scaling notes</label>
-      <textarea id="sustainability_notes" placeholder="What processes can be improved? What tools/templates can be reused? What knowledge should be captured for future projects?"></textarea>
-      <ul class="list">
-        <li>Reusable templates, checklists, or models.</li>
-        <li>Lessons learned to share with the team.</li>
-        <li>Training needs or process gaps.</li>
-      </ul>
-    </div>
-  </section>
-
-  <div class="footer">
-    <div class="quote">Strong process. Strong performance.</div>
-    <div class="print-note">The page stores to your browser if Auto save is enabled. Save to file to move it between devices.</div>
-  </div>
-</main>
-
-<script src="app.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
