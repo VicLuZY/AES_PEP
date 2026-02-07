@@ -58,15 +58,16 @@ header .logo{
   width:56px;height:56px;border:2px solid rgba(255,255,255,.7);
   display:grid;place-items:center;border-radius:10px;font-weight:800;letter-spacing:.06em
 }
-main{padding:20px;max-width:1200px;margin:0 auto}
-h1,h2,h3,label,.tag,.badge,.metric b{color:var(--text);font-weight:700}
 header h1{font-size:1.45rem;margin:0}
-header p{margin:0;opacity:.9;font-weight:600}
+header p{margin:0;opacity:.9}
+main{padding:20px;max-width:1200px;margin:0 auto}
+.grid{display:grid;gap:16px}
+@media (min-width: 900px){ .grid{grid-template-columns: 1.1fr 1fr} }
 section{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:24px;box-shadow:var(--shadow);transition:box-shadow 0.2s ease}
-h2{font-size:1.1rem;margin:0 0 10px;color:var(--text);letter-spacing:.02em}
+h2{font-size:1.1rem;margin:0 0 10px;color:var(--aes-accent);letter-spacing:.02em}
 h3{margin:0 0 8px;font-size:1rem;color:var(--text)}
-.row{display:grid;grid-template-columns:1fr;gap:10px}
-label{font-size:.9rem;color:var(--text)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+label{font-size:.9rem;color:var(--text-muted)}
 input[type="text"],input[type="date"],input[type="number"],textarea,select{
   width:100%;padding:12px;border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text);font-family:inherit;transition:border-color 0.2s ease,box-shadow 0.2s ease
 }
@@ -86,19 +87,20 @@ button.secondary{background:var(--surface);color:var(--aes-accent);border:1px so
 button.secondary:hover{background:var(--aes-green-light);transform:translateY(-1px)}
 button.ghost{background:var(--surface);color:var(--text);border:1px solid var(--border);box-shadow:none}
 button.ghost:hover{background:var(--surface-strong);transform:translateY(-1px)}
-.timeline{display:grid;gap:12px}
-.milestone{display:grid;grid-template-columns:1fr; gap:10px;align-items:center}
+.timeline{display:grid;gap:8px}
+.milestone{display:grid;grid-template-columns: 1fr 140px 150px 32px; gap:10px;align-items:center}
 .milestone input{padding:8px}
 .milestone .del{background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px}
 .bar{height:12px;background:var(--surface-strong);border-radius:999px;overflow:hidden}
 .bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--aes-accent),var(--aes-accent-strong));width:0%}
-.kpis{display:grid;grid-template-columns:1fr;gap:12px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (min-width: 900px){ .kpis{grid-template-columns: repeat(4,1fr)} }
 .kpi{border:1px solid var(--border);border-radius:12px;padding:10px;background:var(--surface-muted)}
 .kpi h3{font-size:.95rem;margin:0 0 6px}
 .kpi .value{display:flex;align-items:center;gap:8px}
 .kpi input[type="range"]{width:100%}
 .process{display:grid;gap:10px}
-.step{border:1px solid var(--border);border-radius:12px;padding:12px;display:grid;grid-template-columns:1fr;gap:10px;align-items:start;background:var(--aes-green-light)}
+.step{border:1px solid var(--border);border-radius:12px;padding:12px;display:grid;grid-template-columns: 24px 1fr auto;gap:10px;align-items:center;background:var(--aes-green-light)}
 .step input[type="checkbox"]{transform:scale(1.2)}
 .step h4{margin:0;font-size:1rem;color:var(--text)}
 .step p{margin:2px 0 0;color:var(--text-muted);font-size:.92rem}
@@ -117,16 +119,13 @@ button.ghost:hover{background:var(--surface-strong);transform:translateY(-1px)}
 .helper{margin:6px 0 0;color:var(--text-muted);font-size:.82rem}
 .divider{height:1px;background:var(--border);margin:12px 0}
 .badge{display:inline-flex;align-items:center;gap:6px;background:var(--surface-strong);border:1px solid var(--border);padding:4px 10px;border-radius:999px;font-size:.75rem;color:var(--text-muted)}
-.status-pill{display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;font-size:.75rem;font-weight:700;background:#e5e7eb;color:#111827;border:1px solid #d1d5db}
-.status-pill.started{background:#fef3c7;border-color:#f59e0b;color:#78350f}
-.status-pill.done{background:#dcfce7;border-color:#22c55e;color:#14532d}
-.status-pill.guidance{background:#dbeafe;border-color:#3b82f6;color:#1e3a8a}
 .list{margin:6px 0 0;padding-left:18px;color:var(--text-muted);font-size:.86rem}
 .list li{margin-bottom:4px}
 .field-group{display:grid;gap:6px}
 .tip-box{background:var(--surface-strong);border:1px solid var(--border);border-radius:12px;padding:12px;font-size:.86rem;color:var(--text)}
 .control-panel{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:20px;box-shadow:var(--shadow);margin-bottom:18px}
 .control-grid{display:grid;gap:16px}
+@media (min-width: 900px){ .control-grid{grid-template-columns: 1.2fr 1fr 1fr} }
 .control-card{background:var(--surface-muted);border:1px solid var(--border);border-radius:16px;padding:16px;display:grid;gap:10px}
 .control-card .actions{margin:0}
 .toc{display:grid;gap:6px}
@@ -134,7 +133,7 @@ button.ghost:hover{background:var(--surface-strong);transform:translateY(-1px)}
 .toc a:hover{border-color:var(--aes-accent);color:var(--aes-accent)}
 .progress-meta{display:flex;gap:12px;flex-wrap:wrap}
 .metric{background:var(--surface);border:1px solid var(--border);padding:8px 12px;border-radius:12px;font-size:.85rem}
-.metric b{display:block;font-size:1rem;font-weight:700}
+.metric b{display:block;font-size:1rem}
 .progress-bar{height:12px;background:var(--surface-strong);border-radius:999px;overflow:hidden}
 .progress-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--aes-accent),var(--aes-accent-strong));width:0%}
 .select{width:100%;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface);color:var(--text);font-family:inherit}
@@ -147,6 +146,6 @@ button.ghost:hover{background:var(--surface-strong);transform:translateY(-1px)}
   .footer{border:none}
   .print-note{display:none}
   body.compact section{padding:10px}
-  body.compact .step{grid-template-columns:1fr; padding:8px}
-  body.compact .milestone{grid-template-columns:1fr}
+  body.compact .step{grid-template-columns: 18px 1fr auto; padding:8px}
+  body.compact .milestone{grid-template-columns: 1fr 120px 140px 28px}
 }

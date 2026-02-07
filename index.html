@@ -13,7 +13,7 @@
   <div class="logo" aria-label="AES logo">AES</div>
   <div>
     <h1>AES Engineering — Project Execution Plan</h1>
-    <p>Interactive PEP built on Plan, Review, Own, Communicate, Execute, Serve, Sustain. Use it to align scope, quality, and delivery from kickoff to closeout.</p>
+    <p>Interactive PEP built on PROCESS methodology: Plan, Review, Own, Communicate, Execute, Serve, Sustain. Use it to align scope, quality, and delivery from kickoff to closeout.</p>
   </div>
 </header>
 
@@ -49,13 +49,9 @@
           <strong>Suggested flow:</strong>
           <ol class="list">
             <li>Complete Plan and Review sections.</li>
-            <li>Confirm readiness and quality checks.</li>
+            <li>Confirm PROCESS steps and QA/QC readiness.</li>
             <li>Align schedule milestones, then review KPIs.</li>
           </ol>
-        </div>
-        <div class="tip-box">
-          <strong>Critical missing items</strong>
-          <ul id="missingItems" class="list"></ul>
         </div>
       </div>
       <div class="control-card">
@@ -72,95 +68,133 @@
         </div>
         <p class="helper">Compact mode reduces spacing for PDF exports and printouts.</p>
         <div class="toc">
-          <a href="#readme">Jump to Readme <span>1 →</span></a>
-          <a href="#ov">Jump to Plan <span>2 →</span></a>
-          <a href="#scope">Jump to Review <span>3 →</span></a>
+          <a href="#ov">Jump to Plan <span>1 →</span></a>
+          <a href="#scope">Jump to Review <span>2 →</span></a>
+          <a href="#proc">Jump to Process <span>3 →</span></a>
           <a href="#sched">Jump to Schedule <span>4 →</span></a>
-          <a href="#qa">Jump to Communication & Execution <span>5 →</span></a>
-          <a href="#kpi">Jump to Service Standards & Sustainability <span>6 →</span></a>
-          <a href="#team">Jump to Team Sign-off Gate <span>7 →</span></a>
+          <a href="#qa">Jump to Communicate/Execute <span>5 →</span></a>
+          <a href="#kpi">Jump to Serve/Sustain <span>6 →</span></a>
         </div>
       </div>
-      <div class="control-card">
-        <h3>Multi-role release gate</h3>
-        <p class="small muted">The plan is not release-ready until all review roles provide feedback and approve.</p>
-        <div class="tip-box">
-          <strong id="releaseStatus">Release readiness: Blocked</strong>
-          <div class="helper" id="releaseCount">Approvals: 0/5 complete</div>
-          <ul class="list" id="releaseGaps"></ul>
+    </div>
+  </section>
+
+  <div class="grid">
+    <section aria-labelledby="ov">
+      <div class="section-header">
+        <h2 id="ov">1. P - Plan with Precision</h2>
+        <span class="badge">Required inputs</span>
+      </div>
+      <p class="section-intro">Capture the essential project definition, constraints, and baseline expectations. Be specific so downstream decisions are aligned.</p>
+      <div class="row">
+        <div class="field-group">
+          <label>Project name</label>
+          <input id="f_name" type="text" placeholder="Example: Murray Manor Generator Replacement" />
+          <div class="helper">Use the official project title from the proposal or contract.</div>
+        </div>
+        <div class="field-group">
+          <label>Client</label>
+          <input id="f_client" type="text" placeholder="Example: BC Housing" />
+          <div class="helper">Include client department or business unit if relevant.</div>
+        </div>
+        <input id="fileInput" type="file" accept=".json" class="hidden" />
+        <div class="callout">Tip: enable Auto save to keep progress in your browser between sessions. Use Save to file to share the plan with your team.</div>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label>AES project number</label>
+          <input id="f_no" type="text" placeholder="e.g., 24-1234" />
+        </div>
+        <div class="field-group">
+          <label>Project manager</label>
+          <input id="f_pm" type="text" placeholder="Name, P.Eng." />
+          <div class="helper">Primary point of contact responsible for schedule and scope.</div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label>Project type</label>
+          <select id="f_type">
+            <option value="">Select…</option>
+            <option>New build</option>
+            <option>Renovation</option>
+            <option>Tenant improvement</option>
+            <option>Feasibility</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Location</label>
+          <input id="f_loc" type="text" placeholder="City, Province (include site name if multiple)" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field-group">
+          <label>Budget estimate</label>
+          <input id="f_budget" type="number" placeholder="Project budget in CAD (base + contingency)" />
+          <div class="helper">Use the most recent cost estimate and note if it is preliminary.</div>
+        </div>
+        <div class="field-group">
+          <label>Estimated hours</label>
+          <input id="f_hours" type="number" placeholder="Total estimated hours (all disciplines)" />
         </div>
         <div class="callout">Roles included: Project Manager, Scrum Master, PMP Consultant, UX/UI Consultant, Software Developer.</div>
       </div>
-    </div>
-  </section>
+      <div style="margin-top:10px">
+        <label>Project success criteria & constraints</label>
+        <textarea id="f_summary" placeholder="Define what success looks like, key constraints, and project boundaries."></textarea>
+        <ul class="list">
+          <li>Success criteria (performance, safety, client expectations).</li>
+          <li>Constraints (budget caps, schedule windows, site access).</li>
+          <li>Assumptions requiring confirmation.</li>
+        </ul>
+      </div>
+      <div style="margin-top:10px">
+        <label>Work Breakdown Structure (WBS) Notes</label>
+        <textarea id="f_wbs" placeholder="Key deliverables, phases, and major work packages."></textarea>
+        <div class="helper">Break down by phase (e.g., DD, CD, CA) and include key deliverables.</div>
+      </div>
+      <p class="print-note">Tip: use Control Center actions above to save, print, or reset.</p>
+    </section>
 
-  <section aria-labelledby="readme">
-    <div class="section-header">
-      <h2 id="readme">Project Execution Plan Readme</h2>
-      <span class="status-pill" id="status-readme">Guidance</span>
-    </div>
-    <p class="section-intro">Use this page as a living plan. Update it at each phase gate and share it with stakeholders for alignment.</p>
-    <div class="tip-box">
-      <strong>How to use this tool</strong>
-      <ul class="list">
-        <li>Complete the Plan section first to establish scope, success criteria, and constraints.</li>
-        <li>Confirm scope inclusions and document risks before execution begins.</li>
-        <li>Define milestones and track hours, then update quality and communication items weekly.</li>
-        <li>Review KPIs monthly and capture reusable improvements for future projects.</li>
-      </ul>
-    </div>
-  </section>
-
-  <section aria-labelledby="ov">
-    <div class="section-header">
-      <h2 id="ov">1. Plan with Precision</h2>
-      <span class="status-pill" id="status-plan">Not started</span>
-    </div>
-    <p class="section-intro">Capture the essential project definition, constraints, and baseline expectations. Be specific so downstream decisions are aligned.</p>
-    <div class="row">
-      <div class="field-group">
-        <label>Project name</label>
-        <input id="f_name" type="text" placeholder="Example: Murray Manor Generator Replacement" />
-        <div class="helper">Use the official project title from the proposal or contract.</div>
+    <section aria-labelledby="scope">
+      <div class="section-header">
+        <h2 id="scope">2. R - Review & Reinforce Planning</h2>
+        <span class="badge">Scope alignment</span>
       </div>
-      <div class="field-group">
-        <label>Client</label>
-        <input id="f_client" type="text" placeholder="Example: BC Housing" />
-        <div class="helper">Include client department or business unit if relevant.</div>
+      <p class="section-intro">Confirm the scope items included in this contract and add clarifications for anything custom or excluded.</p>
+      <div class="flex small muted">Toggle what is included. Add details in Notes for exclusions or special requirements.</div>
+      <div id="scopeList" class="actions" aria-live="polite">
+        <!-- pills injected by JS -->
       </div>
-    </div>
-    <div class="row">
-      <div class="field-group">
-        <label>AES project number</label>
-        <input id="f_no" type="text" placeholder="e.g., 24-1234" />
+      <div style="margin-top:10px">
+        <label>Detailed scope clarifications</label>
+        <textarea id="scope_notes" placeholder="Add clarifications such as EVEMS testing, BESS feasibility, or utility coordination."></textarea>
+        <div class="helper">Note any owner-provided items, coordination boundaries, and deliverable ownership.</div>
       </div>
-      <div class="field-group">
-        <label>Project manager</label>
-        <input id="f_pm" type="text" placeholder="Name, P.Eng." />
-        <div class="helper">Primary point of contact responsible for schedule and scope.</div>
+      <div class="row" style="margin-top:10px">
+        <div class="field-group">
+          <label>Review schedule</label>
+          <select id="review_schedule">
+            <option value="">Select review frequency</option>
+            <option>Weekly</option>
+            <option>Bi-weekly</option>
+            <option>Monthly</option>
+            <option>As needed</option>
+          </select>
+        </div>
+        <div class="field-group">
+          <label>Key stakeholders</label>
+          <input id="stakeholders" type="text" placeholder="Client PM, Architect, Contractor, Authority Having Jurisdiction" />
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="field-group">
-        <label>Project type</label>
-        <select id="f_type">
-          <option value="">Select…</option>
-          <option>New build</option>
-          <option>Renovation</option>
-          <option>Tenant improvement</option>
-          <option>Feasibility</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>Location</label>
-        <input id="f_loc" type="text" placeholder="City, Province (include site name if multiple)" />
-      </div>
-    </div>
-    <div class="row">
-      <div class="field-group">
-        <label>Budget estimate</label>
-        <input id="f_budget" type="number" placeholder="Project budget in CAD (base + contingency)" />
-        <div class="helper">Use the most recent cost estimate and note if it is preliminary.</div>
+      <div style="margin-top:10px">
+        <label>Risk assessment & mitigation</label>
+        <textarea id="risk_notes" placeholder="Identify potential risks and mitigation strategies."></textarea>
+        <ul class="list">
+          <li>Top 3 project risks and their triggers.</li>
+          <li>Mitigation actions and responsible owner.</li>
+          <li>Required decisions or approvals.</li>
+        </ul>
       </div>
       <div class="field-group">
         <label>Estimated hours</label>
@@ -189,40 +223,9 @@
       <h2 id="scope">2. Review & Reinforce Planning</h2>
       <span class="status-pill" id="status-review">Not started</span>
     </div>
-    <p class="section-intro">Confirm the scope items included in this contract and add clarifications for anything custom or excluded.</p>
-    <div class="flex small muted">Toggle what is included. Add details in Notes for exclusions or special requirements.</div>
-    <div id="scopeList" class="actions" aria-live="polite">
-      <!-- pills injected by JS -->
-    </div>
-    <div style="margin-top:10px">
-      <label>Detailed scope clarifications</label>
-      <textarea id="scope_notes" placeholder="Add clarifications such as EVEMS testing, BESS feasibility, or utility coordination."></textarea>
-      <div class="helper">Note any owner-provided items, coordination boundaries, and deliverable ownership.</div>
-    </div>
-    <div class="row" style="margin-top:10px">
-      <div class="field-group">
-        <label>Review schedule</label>
-        <select id="review_schedule">
-          <option value="">Select review frequency</option>
-          <option>Weekly</option>
-          <option>Bi-weekly</option>
-          <option>Monthly</option>
-          <option>As needed</option>
-        </select>
-      </div>
-      <div class="field-group">
-        <label>Key stakeholders</label>
-        <input id="stakeholders" type="text" placeholder="Client PM, Architect, Contractor, Authority Having Jurisdiction" />
-      </div>
-    </div>
-    <div style="margin-top:10px">
-      <label>Risk assessment & mitigation</label>
-      <textarea id="risk_notes" placeholder="Identify potential risks and mitigation strategies."></textarea>
-      <ul class="list">
-        <li>Top 3 project risks and their triggers.</li>
-        <li>Mitigation actions and responsible owner.</li>
-        <li>Required decisions or approvals.</li>
-      </ul>
+    <p class="section-intro">Use this checklist to confirm the PROCESS principles are actively managed. Review at each phase gate.</p>
+    <div class="process" id="processSteps">
+      <!-- steps injected by JS -->
     </div>
   </section>
 
@@ -231,7 +234,6 @@
       <h2 id="sched">3. Own & Optimize Schedule</h2>
         <button id="addM" class="ghost">Add milestone</button>
       </div>
-      <span class="status-pill" id="status-schedule">Not started</span>
       <p class="section-intro">Define key dates and deliverables. Keep milestones measurable with clear outputs.</p>
       <div class="timeline" id="timeline"></div>
       <div style="margin-top:8px">
@@ -262,10 +264,10 @@
       </div>
   </section>
 
-  <section aria-labelledby="qa">
+    <section aria-labelledby="qa">
       <div class="section-header">
-        <h2 id="qa">4. Communication & Execution</h2>
-        <span class="status-pill" id="status-execution">Not started</span>
+        <h2 id="qa">5. C - Communicate & E - Execute</h2>
+        <span class="badge">Readiness & quality</span>
       </div>
       <p class="section-intro">Document communication cadence, decision logs, and QA/QC readiness to keep delivery aligned.</p>
       <div class="flex small muted">Use checkboxes to track readiness and quality.</div>
@@ -304,8 +306,8 @@
 
   <section aria-labelledby="kpi">
     <div class="section-header">
-      <h2 id="kpi">5. Service Standards & Sustainability</h2>
-      <span class="status-pill" id="status-sustainability">Not started</span>
+      <h2 id="kpi">6. S1 - Serve with Standards & S2 - Sustain</h2>
+      <span class="badge">Performance & sustainability</span>
     </div>
     <p class="section-intro">Track performance outcomes and capture long-term improvements that can be reused on future projects.</p>
     <div class="kpis">
@@ -360,39 +362,6 @@
         <li>Lessons learned to share with the team.</li>
         <li>Training needs or process gaps.</li>
       </ul>
-    </div>
-  </section>
-
-  <section aria-labelledby="team">
-    <div class="section-header">
-      <h2 id="team">6. Team Sign-off Gate</h2>
-      <span class="status-pill" id="status-team">Not started</span>
-    </div>
-    <p class="section-intro">Capture explicit feedback from each role and check approval before final release or handoff.</p>
-    <div class="field-group" style="margin-bottom:12px">
-      <label>Project Manager feedback</label>
-      <textarea id="fb_pm" placeholder="Scope alignment, client concerns, and release confidence."></textarea>
-      <label class="pill"><input type="checkbox" id="ok_pm"> Project Manager sign-off complete</label>
-    </div>
-    <div class="field-group" style="margin-bottom:12px">
-      <label>Scrum Master feedback</label>
-      <textarea id="fb_sm" placeholder="Delivery flow, blockers, throughput, and risk to commitments."></textarea>
-      <label class="pill"><input type="checkbox" id="ok_sm"> Scrum Master sign-off complete</label>
-    </div>
-    <div class="field-group" style="margin-bottom:12px">
-      <label>PMP Consultant feedback</label>
-      <textarea id="fb_pmp" placeholder="Governance, baseline control, stakeholder management, and risk plan quality."></textarea>
-      <label class="pill"><input type="checkbox" id="ok_pmp"> PMP Consultant sign-off complete</label>
-    </div>
-    <div class="field-group" style="margin-bottom:12px">
-      <label>UX/UI Consultant feedback</label>
-      <textarea id="fb_ux" placeholder="Usability, accessibility, readability, and information hierarchy observations."></textarea>
-      <label class="pill"><input type="checkbox" id="ok_ux"> UX/UI Consultant sign-off complete</label>
-    </div>
-    <div class="field-group" style="margin-bottom:12px">
-      <label>Expert Software Developer feedback</label>
-      <textarea id="fb_dev" placeholder="Code quality, maintainability, performance, and reliability notes."></textarea>
-      <label class="pill"><input type="checkbox" id="ok_dev"> Software Developer sign-off complete</label>
     </div>
   </section>
 

@@ -21,6 +21,36 @@ scopeItems.forEach((name,i)=>{
   scopeList.appendChild(pill);
 });
 
+// PROCESS steps
+const steps=[
+  {k:'P', t:'Plan with precision', d:'Confirm scope, deliverables, WBS, hours, and schedule. Align on constraints, assumptions, and success criteria.'},
+  {k:'R', t:'Review and reinforce', d:'Schedule design reviews, close comments, and validate scope alignment at key percent completion milestones.'},
+  {k:'O', t:'Own and optimize', d:'Track efficiency and outcomes. Identify bottlenecks, set improvement actions, and assign owners.'},
+  {k:'C', t:'Communicate clearly', d:'Share updates early, document decisions, and keep stakeholders aware of risks and changes.'},
+  {k:'E', t:'Execute with efficiency', d:'Deliver to standards using templates, tools, and automation to reduce rework and cycle time.'},
+  {k:'S1', t:'Serve with standards', d:'Meet AES quality expectations and provide responsive, professional service to clients and partners.'},
+  {k:'S2', t:'Sustain and scale', d:'Capture lessons learned, update assets, and make improvements reusable for future projects.'}
+];
+const processWrap=$('#processSteps');
+steps.forEach((s,idx)=>{
+  const div=document.createElement('div');
+  div.className='step';
+  div.innerHTML=`<input type="checkbox" data-step="${s.k}">
+    <div>
+      <h4>${s.t}</h4>
+      <p>${s.d}</p>
+    </div>
+    <span class="tag">Step ${idx+1}</span>`;
+  processWrap.appendChild(div);
+});
+
+function refreshDone(){
+  const done = $$('#processSteps input[type="checkbox"]:checked').length;
+  $('#doneCount').textContent = done;
+  updateCompletion();
+}
+processWrap.addEventListener('change', refreshDone);
+
 // QA QC list - Enhanced for PROCESS principles
 const qaItems=[
   'Technical peer review complete with comments resolved',
@@ -110,6 +140,7 @@ function snapshot(){
     review_schedule: $('#review_schedule').value,
     stakeholders: $('#stakeholders').value,
     risk_notes: $('#risk_notes').value,
+    steps: $$('#processSteps input[type="checkbox"]').map(x=>x.checked),
     qa: $$('#qaList input[type="checkbox"]').map(x=>x.checked),
     cadence: $('#cadence').value,
     change: $('#change').value,
@@ -129,10 +160,6 @@ function snapshot(){
       knowledge:$('#kpi_knowledge').value,team:$('#kpi_team').value
     },
     sustainability_notes: $('#sustainability_notes').value,
-    team:{
-      fb_pm: $('#fb_pm').value, fb_sm: $('#fb_sm').value, fb_pmp: $('#fb_pmp').value, fb_ux: $('#fb_ux').value, fb_dev: $('#fb_dev').value,
-      ok_pm: $('#ok_pm').checked, ok_sm: $('#ok_sm').checked, ok_pmp: $('#ok_pmp').checked, ok_ux: $('#ok_ux').checked, ok_dev: $('#ok_dev').checked
-    },
     compact: $('#compactTog').checked
   };
 }
@@ -153,6 +180,7 @@ function apply(data){
   $('#review_schedule').value=data.review_schedule||'';
   $('#stakeholders').value=data.stakeholders||'';
   $('#risk_notes').value=data.risk_notes||'';
+  $$('#processSteps input[type="checkbox"]').forEach((x,i)=>x.checked=!!data.steps?.[i]);
   $$('#qaList input[type="checkbox"]').forEach((x,i)=>x.checked=!!data.qa?.[i]);
   $('#cadence').value=data.cadence||'';
   $('#change').value=data.change||'';
@@ -176,19 +204,9 @@ function apply(data){
   bindKPI('kpi_time'); bindKPI('kpi_ts'); bindKPI('kpi_rw'); bindKPI('kpi_cs',10);
   bindKPI('kpi_standards'); bindKPI('kpi_improvement'); bindKPI('kpi_knowledge'); bindKPI('kpi_team',10);
   $('#sustainability_notes').value=data.sustainability_notes||'';
-  $('#fb_pm').value=data.team?.fb_pm||'';
-  $('#fb_sm').value=data.team?.fb_sm||'';
-  $('#fb_pmp').value=data.team?.fb_pmp||'';
-  $('#fb_ux').value=data.team?.fb_ux||'';
-  $('#fb_dev').value=data.team?.fb_dev||'';
-  $('#ok_pm').checked=!!data.team?.ok_pm;
-  $('#ok_sm').checked=!!data.team?.ok_sm;
-  $('#ok_pmp').checked=!!data.team?.ok_pmp;
-  $('#ok_ux').checked=!!data.team?.ok_ux;
-  $('#ok_dev').checked=!!data.team?.ok_dev;
   $('#compactTog').checked = !!data.compact;
   applyCompact();
-  updateMsBar();
+  refreshDone(); updateMsBar();
 }
 function saveToLocal(){
   localStorage.setItem(storeKey, JSON.stringify(snapshot()));
@@ -250,8 +268,7 @@ const trackedFields = [
   'f_name','f_client','f_no','f_pm','f_type','f_loc','f_budget','f_hours',
   'f_summary','f_wbs','scope_notes','review_schedule','stakeholders','risk_notes',
   'cadence','change','doc_standards','efficiency_tools','comm_log','actual_hours',
-  'efficiency_rating','optimization_notes','sustainability_notes',
-  'fb_pm','fb_sm','fb_pmp','fb_ux','fb_dev'
+  'efficiency_rating','optimization_notes','sustainability_notes'
 ];
 function isFilled(el){
   if(!el) return false;
@@ -259,106 +276,25 @@ function isFilled(el){
   if(el.type === 'number') return el.value !== '';
   return String(el.value || '').trim().length > 0;
 }
-
-const sectionRules = {
-  plan: ['f_name','f_client','f_pm','f_summary','f_wbs'],
-  review: ['scope_notes','review_schedule','stakeholders','risk_notes'],
-  schedule: ['actual_hours','efficiency_rating','optimization_notes'],
-  execution: ['cadence','change','doc_standards','efficiency_tools','comm_log'],
-  sustainability: ['sustainability_notes'],
-  team: ['fb_pm','fb_sm','fb_pmp','fb_ux','fb_dev']
-};
-
-function updateSectionStatus(id, ratio){
-  const el = $('#status-' + id);
-  if(!el) return;
-  el.classList.remove('started','done');
-  if(id === 'readme'){
-    el.classList.add('guidance');
-    return;
-  }
-  if(ratio >= 1){
-    el.textContent = 'Complete';
-    el.classList.add('done');
-  } else if(ratio > 0){
-    el.textContent = 'In progress';
-    el.classList.add('started');
-  } else {
-    el.textContent = 'Not started';
-  }
-}
-
-function updateMissingItems(){
-  const missing = [];
-  if(!isFilled($('#f_name'))) missing.push('Add a project name in Plan with Precision.');
-  if(!isFilled($('#f_summary'))) missing.push('Define success criteria and constraints.');
-  if(!isFilled($('#risk_notes'))) missing.push('Document top project risks and mitigations.');
-  if($$('.milestone').length === 0) missing.push('Add at least one schedule milestone.');
-  if(!$$('#qaList input[type="checkbox"]:checked').length) missing.push('Mark at least one readiness/quality checkpoint complete.');
-  if(!$('#ok_pm').checked || !$('#ok_sm').checked || !$('#ok_pmp').checked || !$('#ok_ux').checked || !$('#ok_dev').checked) missing.push('Complete all Team Sign-off approvals before release.');
-
-  const list = $('#missingItems');
-  if(!list) return;
-  list.innerHTML = '';
-  if(!missing.length){
-    const li = document.createElement('li');
-    li.textContent = 'No critical gaps detected. Keep details updated as the project evolves.';
-    list.appendChild(li);
-    return;
-  }
-  missing.slice(0,5).forEach(item=>{
-    const li = document.createElement('li');
-    li.textContent = item;
-    list.appendChild(li);
-  });
-}
-
-function updateReleaseGate(){
-  const checks = [
-    ['Project Manager', $('#ok_pm')?.checked],
-    ['Scrum Master', $('#ok_sm')?.checked],
-    ['PMP Consultant', $('#ok_pmp')?.checked],
-    ['UX/UI Consultant', $('#ok_ux')?.checked],
-    ['Software Developer', $('#ok_dev')?.checked]
-  ];
-  const approvedCount = checks.filter(([,ok])=>!!ok).length;
-  const gaps = checks.filter(([,ok])=>!ok).map(([name])=>name + ' sign-off pending');
-  const status = $('#releaseStatus');
-  const list = $('#releaseGaps');
-  const count = $('#releaseCount');
-  if(status){
-    status.textContent = gaps.length ? 'Release readiness: Blocked' : 'Release readiness: Approved';
-  }
-  if(count){
-    count.textContent = `Approvals: ${approvedCount}/5 complete`;
-  }
-  if(list){
-    list.innerHTML = '';
-    if(!gaps.length){
-      const li=document.createElement('li');
-      li.textContent='All role approvals complete. Release gate is clear.';
-      list.appendChild(li);
-    } else {
-      gaps.forEach(g=>{const li=document.createElement('li');li.textContent=g;list.appendChild(li);});
-    }
-  }
-}
 function updateCompletion(){
   const fieldEls = trackedFields.map(id=>$('#'+id)).filter(Boolean);
   let total = fieldEls.length;
   let done = fieldEls.filter(isFilled).length;
 
   const scopeChecks = $$('#scopeList input');
+  const processChecks = $$('#processSteps input[type="checkbox"]');
   const qaChecks = $$('#qaList input[type="checkbox"]');
   const milestoneChecks = $$('.milestone input[type="checkbox"]');
 
-  total += scopeChecks.length + qaChecks.length + milestoneChecks.length;
+  total += scopeChecks.length + processChecks.length + qaChecks.length + milestoneChecks.length;
   done += scopeChecks.filter(c=>c.checked).length;
+  done += processChecks.filter(c=>c.checked).length;
   done += qaChecks.filter(c=>c.checked).length;
   done += milestoneChecks.filter(c=>c.checked).length;
 
-  const checklistTotal = scopeChecks.length + qaChecks.length;
+  const checklistTotal = scopeChecks.length + processChecks.length + qaChecks.length;
   const checklistDone = scopeChecks.filter(c=>c.checked).length +
+    processChecks.filter(c=>c.checked).length +
     qaChecks.filter(c=>c.checked).length;
 
   const milestonesTotal = milestoneChecks.length || 1;
@@ -372,20 +308,6 @@ function updateCompletion(){
   $('#checklistPct').textContent = checklistPct;
   $('#milestonePct').textContent = milestonePct;
   $('#overallBar').style.width = overallPct + '%';
-
-  Object.entries(sectionRules).forEach(([section, ids])=>{
-    const nodes = ids.map(id=>$('#'+id)).filter(Boolean);
-    let ratio = nodes.length ? nodes.filter(isFilled).length / nodes.length : 0;
-    if(section === 'team'){
-      const approvals = [$('#ok_pm'), $('#ok_sm'), $('#ok_pmp'), $('#ok_ux'), $('#ok_dev')].filter(Boolean);
-      const approvalRatio = approvals.length ? approvals.filter(x=>x.checked).length / approvals.length : 0;
-      ratio = (ratio + approvalRatio) / 2;
-    }
-    updateSectionStatus(section, ratio);
-  });
-  updateSectionStatus('readme', 1);
-  updateMissingItems();
-  updateReleaseGate();
 }
 
 // Provide some defaults on first load
