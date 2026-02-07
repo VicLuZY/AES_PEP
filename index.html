@@ -97,6 +97,8 @@
           <input id="f_client" type="text" placeholder="Example: BC Housing" />
           <div class="helper">Include client department or business unit if relevant.</div>
         </div>
+        <input id="fileInput" type="file" accept=".json" class="hidden" />
+        <div class="callout">Tip: enable Auto save to keep progress in your browser between sessions. Use Save to file to share the plan with your team.</div>
       </div>
       <div class="row">
         <div class="field-group">
@@ -135,6 +137,7 @@
           <label>Estimated hours</label>
           <input id="f_hours" type="number" placeholder="Total estimated hours (all disciplines)" />
         </div>
+        <div class="callout">Roles included: Project Manager, Scrum Master, PMP Consultant, UX/UI Consultant, Software Developer.</div>
       </div>
       <div style="margin-top:10px">
         <label>Project success criteria & constraints</label>
@@ -193,13 +196,32 @@
           <li>Required decisions or approvals.</li>
         </ul>
       </div>
-    </section>
-  </div>
+      <div class="field-group">
+        <label>Estimated hours</label>
+        <input id="f_hours" type="number" placeholder="Total estimated hours (all disciplines)" />
+      </div>
+    </div>
+    <div style="margin-top:10px">
+      <label>Project success criteria & constraints</label>
+      <textarea id="f_summary" placeholder="Define what success looks like, key constraints, and project boundaries."></textarea>
+      <ul class="list">
+        <li>Success criteria (performance, safety, client expectations).</li>
+        <li>Constraints (budget caps, schedule windows, site access).</li>
+        <li>Assumptions requiring confirmation.</li>
+      </ul>
+    </div>
+    <div style="margin-top:10px">
+      <label>Work Breakdown Structure (WBS) Notes</label>
+      <textarea id="f_wbs" placeholder="Key deliverables, phases, and major work packages."></textarea>
+      <div class="helper">Break down by phase (e.g., DD, CD, CA) and include key deliverables.</div>
+    </div>
+    <p class="print-note">Tip: use Control Center actions above to save, print, or reset.</p>
+  </section>
 
-  <section aria-labelledby="proc">
-    <div class="flex" style="justify-content:space-between;align-items:center;">
-      <h2 id="proc">3. PROCESS stepper</h2>
-      <span class="tag"><span id="doneCount">0</span>/7 steps done</span>
+  <section aria-labelledby="scope">
+    <div class="section-header">
+      <h2 id="scope">2. Review & Reinforce Planning</h2>
+      <span class="status-pill" id="status-review">Not started</span>
     </div>
     <p class="section-intro">Use this checklist to confirm the PROCESS principles are actively managed. Review at each phase gate.</p>
     <div class="process" id="processSteps">
@@ -207,10 +229,9 @@
     </div>
   </section>
 
-  <div class="grid">
-    <section aria-labelledby="sched">
-      <div class="flex" style="justify-content:space-between;align-items:center;">
-        <h2 id="sched">4. O - Own & Optimize Schedule</h2>
+  <section aria-labelledby="sched">
+    <div class="flex" style="justify-content:space-between;align-items:center;">
+      <h2 id="sched">3. Own & Optimize Schedule</h2>
         <button id="addM" class="ghost">Add milestone</button>
       </div>
       <p class="section-intro">Define key dates and deliverables. Keep milestones measurable with clear outputs.</p>
@@ -241,7 +262,7 @@
         <textarea id="optimization_notes" placeholder="What worked well? What can be improved? Process improvements identified."></textarea>
         <div class="helper">Capture improvement actions and the owner responsible for follow-through.</div>
       </div>
-    </section>
+  </section>
 
     <section aria-labelledby="qa">
       <div class="section-header">
@@ -281,8 +302,7 @@
         <textarea id="comm_log" placeholder="Key decisions, client feedback, and important communications."></textarea>
         <div class="helper">Capture dates, decision owners, and next actions.</div>
       </div>
-    </section>
-  </div>
+  </section>
 
   <section aria-labelledby="kpi">
     <div class="section-header">
