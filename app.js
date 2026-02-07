@@ -1,323 +1,235 @@
-// UTIL
-const $ = (q,ctx=document)=>ctx.querySelector(q);
-const $$ = (q,ctx=document)=>Array.from(ctx.querySelectorAll(q));
-const storeKey='aes_pep_v1';
-const themeKey='aes_pep_theme';
+const $ = (q, ctx = document) => ctx.querySelector(q);
+const $$ = (q, ctx = document) => Array.from(ctx.querySelectorAll(q));
 
-// SCOPE pills
-const scopeItems=[
-  'Design development','Construction documentation','Contract administration',
-  'Commissioning support','Utility coordination','Cost estimate Class D',
-  'Solar or BESS feasibility','EV infrastructure and EVEMS','Fire alarm and life safety',
-  'Lighting and controls','Power distribution and single line','Specifications',
-  'Site reviews and reports','As-built review and record drawings'
+const STORE_KEY = 'aes_pep_studio_v2';
+const THEME_KEY = 'aes_pep_theme_v2';
+
+const laneTemplates = [
+  { lane: 'Sprint planning', title: 'Define MVP scope', note: 'Project manager + scrum master prioritize outcomes.' },
+  { lane: 'Design review', title: 'Validate user journeys', note: 'UX/UI consultant pressure-tests clarity.' },
+  { lane: 'Engineering', title: 'Build increment', note: 'Expert developer implements agreed solution.' },
+  { lane: 'QA gate', title: 'Acceptance check', note: 'PMP consultant validates process compliance.' }
 ];
-const scopeList = $('#scopeList');
-scopeItems.forEach((name,i)=>{
-  const id='sc'+i;
-  const pill=document.createElement('label');
-  pill.className='pill';
-  pill.innerHTML=`<input type="checkbox" id="${id}"><span>${name}</span>`;
-  scopeList.appendChild(pill);
-});
 
-// PROCESS steps
-const steps=[
-  {k:'P', t:'Plan with precision', d:'Confirm scope, deliverables, WBS, hours, and schedule. Align on constraints, assumptions, and success criteria.'},
-  {k:'R', t:'Review and reinforce', d:'Schedule design reviews, close comments, and validate scope alignment at key percent completion milestones.'},
-  {k:'O', t:'Own and optimize', d:'Track efficiency and outcomes. Identify bottlenecks, set improvement actions, and assign owners.'},
-  {k:'C', t:'Communicate clearly', d:'Share updates early, document decisions, and keep stakeholders aware of risks and changes.'},
-  {k:'E', t:'Execute with efficiency', d:'Deliver to standards using templates, tools, and automation to reduce rework and cycle time.'},
-  {k:'S1', t:'Serve with standards', d:'Meet AES quality expectations and provide responsive, professional service to clients and partners.'},
-  {k:'S2', t:'Sustain and scale', d:'Capture lessons learned, update assets, and make improvements reusable for future projects.'}
+const agents = [
+  'Project manager (user voice)',
+  'Scrum master',
+  'PMP consultant',
+  'Expert software developer',
+  'UX/UI consultant',
+  'QA / delivery consultant'
 ];
-const processWrap=$('#processSteps');
-steps.forEach((s,idx)=>{
-  const div=document.createElement('div');
-  div.className='step';
-  div.innerHTML=`<input type="checkbox" data-step="${s.k}">
-    <div>
-      <h4>${s.t}</h4>
-      <p>${s.d}</p>
-    </div>
-    <span class="tag">Step ${idx+1}</span>`;
-  processWrap.appendChild(div);
-});
 
-function refreshDone(){
-  const done = $$('#processSteps input[type="checkbox"]:checked').length;
-  $('#doneCount').textContent = done;
-  updateCompletion();
-}
-processWrap.addEventListener('change', refreshDone);
-
-// QA QC list - Enhanced for PROCESS principles
-const qaItems=[
-  'Technical peer review complete with comments resolved',
-  'Code and standard compliance verified for all deliverables',
-  'Coordination across disciplines verified (architecture, civil, structural)',
-  'PM sign-off complete with scope and budget alignment',
-  'RFI response issued within agreed turnaround window',
-  'Submittal review completed within target window',
-  'Client communication documented and stored in project log',
-  'Change management process followed with approvals',
-  'AES standards and templates used consistently',
-  'Lessons learned captured during and after delivery',
-  'Knowledge transfer completed with the team',
-  'Process improvements identified and assigned to owners'
-];
-const qaList=$('#qaList');
-qaItems.forEach((text,i)=>{
-  const div=document.createElement('div');
-  div.className='step';
-  div.innerHTML=`<input type="checkbox" id="qa${i}">
-    <div><h4>${text}</h4><p class="muted">Check when complete.</p></div>`;
-  qaList.appendChild(div);
-});
-
-// Milestones
-const timeline=$('#timeline');
-function addMilestone(v={name:'', date:'', deliverable:'', done:false}){
-  const row=document.createElement('div');
-  row.className='milestone';
+function laneRow(data = {}) {
+  const row = document.createElement('article');
+  row.className = 'lane-item';
   row.innerHTML = `
-    <input type="text" placeholder="Milestone" value="${v.name||''}" />
-    <input type="date" value="${v.date||''}" />
-    <input type="text" placeholder="Deliverable" value="${v.deliverable||''}" />
-    <input type="checkbox" ${v.done?'checked':''} aria-label="Complete">
-    <button class="del" title="Remove">×</button>
+    <input type="checkbox" class="laneDone" ${data.done ? 'checked' : ''} aria-label="Complete task" />
+    <div>
+      <input class="lane" type="text" placeholder="Lane" value="${data.lane || ''}" />
+      <input class="title" type="text" placeholder="Task title" value="${data.title || ''}" />
+      <p><textarea class="note" placeholder="Iteration feedback / rationale">${data.note || ''}</textarea></p>
+    </div>
+    <button class="remove" title="remove">×</button>
   `;
-  timeline.appendChild(row);
-  updateMsBar();
+  return row;
 }
-$('#addM').addEventListener('click',()=>addMilestone());
 
-timeline.addEventListener('click',(e)=>{
-  if(e.target.classList.contains('del')){
-    e.target.parentElement.remove(); updateMsBar();
+function milestoneRow(data = {}) {
+  const row = document.createElement('div');
+  row.className = 'milestone';
+  row.innerHTML = `
+    <input class="msName" type="text" placeholder="Milestone" value="${data.name || ''}" />
+    <input class="msDate" type="date" value="${data.date || ''}" />
+    <label><input class="msDone" type="checkbox" ${data.done ? 'checked' : ''} /> done</label>
+    <button class="remove">×</button>
+  `;
+  return row;
+}
+
+function agentCard(name, data = {}) {
+  const card = document.createElement('section');
+  card.className = 'agent-card';
+  card.innerHTML = `
+    <div class="agent-head">
+      <h4>${name}</h4>
+      <label class="approved"><input class="agentApproved" type="checkbox" ${data.approved ? 'checked' : ''}> satisfied</label>
+    </div>
+    <select class="agentMood">
+      <option ${data.mood === 'Need rework' ? 'selected' : ''}>Need rework</option>
+      <option ${data.mood === 'Close to ready' ? 'selected' : ''}>Close to ready</option>
+      <option ${data.mood === 'Approved for release' ? 'selected' : ''}>Approved for release</option>
+    </select>
+    <textarea class="agentFeedback" placeholder="Feedback from this role...">${data.feedback || ''}</textarea>
+  `;
+  return card;
+}
+
+function seed() {
+  const lanes = $('#lanes');
+  lanes.innerHTML = '';
+  laneTemplates.forEach(item => lanes.appendChild(laneRow(item)));
+
+  const milestones = $('#milestones');
+  milestones.innerHTML = '';
+  ['Discovery complete', 'Prototype sign-off', 'UAT accepted', 'Go-live ready']
+    .forEach(name => milestones.appendChild(milestoneRow({ name })));
+
+  const board = $('#agentBoard');
+  board.innerHTML = '';
+  agents.forEach(agent => board.appendChild(agentCard(agent)));
+}
+
+function snapshot() {
+  return {
+    projectName: $('#projectName').value,
+    sponsor: $('#sponsor').value,
+    manager: $('#manager').value,
+    mission: $('#mission').value,
+    targetDate: $('#targetDate').value,
+    risks: $('#risks').value,
+    mitigation: $('#mitigation').value,
+    decisionLog: $('#decisionLog').value,
+    lanes: $$('.lane-item').map(item => ({
+      done: $('.laneDone', item).checked,
+      lane: $('.lane', item).value,
+      title: $('.title', item).value,
+      note: $('.note', item).value
+    })),
+    milestones: $$('.milestone').map(item => ({
+      name: $('.msName', item).value,
+      date: $('.msDate', item).value,
+      done: $('.msDone', item).checked
+    })),
+    agents: $$('.agent-card').map(item => ({
+      approved: $('.agentApproved', item).checked,
+      mood: $('.agentMood', item).value,
+      feedback: $('.agentFeedback', item).value
+    })),
+    autoSave: $('#autoSave').checked
+  };
+}
+
+function apply(data) {
+  $('#projectName').value = data.projectName || '';
+  $('#sponsor').value = data.sponsor || '';
+  $('#manager').value = data.manager || '';
+  $('#mission').value = data.mission || '';
+  $('#targetDate').value = data.targetDate || '';
+  $('#risks').value = data.risks || '';
+  $('#mitigation').value = data.mitigation || '';
+  $('#decisionLog').value = data.decisionLog || '';
+  $('#autoSave').checked = !!data.autoSave;
+
+  const lanes = $('#lanes');
+  lanes.innerHTML = '';
+  (data.lanes?.length ? data.lanes : laneTemplates).forEach(item => lanes.appendChild(laneRow(item)));
+
+  const milestones = $('#milestones');
+  milestones.innerHTML = '';
+  (data.milestones?.length ? data.milestones : [{ name: 'Discovery complete' }]).forEach(item => milestones.appendChild(milestoneRow(item)));
+
+  const board = $('#agentBoard');
+  board.innerHTML = '';
+  if (data.agents?.length) {
+    data.agents.forEach((item, idx) => board.appendChild(agentCard(agents[idx] || `Agent ${idx + 1}`, item)));
+  } else {
+    agents.forEach(agent => board.appendChild(agentCard(agent)));
+  }
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const fields = ['projectName', 'sponsor', 'manager', 'mission', 'targetDate', 'risks', 'mitigation', 'decisionLog'];
+  const fieldDone = fields.map(id => $('#' + id)).filter(el => (el.value || '').trim().length > 0).length;
+  const laneDone = $$('.laneDone:checked').length;
+  const laneTotal = Math.max($$('.laneDone').length, 1);
+  const msDone = $$('.msDone:checked').length;
+  const msTotal = Math.max($$('.msDone').length, 1);
+  const agentDone = $$('.agentApproved:checked').length;
+  const agentTotal = Math.max($$('.agentApproved').length, 1);
+
+  const total = fields.length + laneTotal + msTotal + agentTotal;
+  const done = fieldDone + laneDone + msDone + agentDone;
+
+  const overall = Math.round(done * 100 / total);
+  const agentPct = Math.round(agentDone * 100 / agentTotal);
+
+  $('#overallPct').textContent = `${overall}%`;
+  $('#agentPct').textContent = `${agentPct}%`;
+  $('#overallBar').style.width = `${overall}%`;
+}
+
+function storeLocal() {
+  localStorage.setItem(STORE_KEY, JSON.stringify(snapshot()));
+}
+
+function applyTheme(theme) {
+  const selected = theme || 'aurora';
+  document.documentElement.dataset.theme = selected;
+  $('#themeSelect').value = selected;
+  localStorage.setItem(THEME_KEY, selected);
+}
+
+$('#addLaneItem').addEventListener('click', () => {
+  $('#lanes').appendChild(laneRow());
+  updateProgress();
+});
+$('#addMilestone').addEventListener('click', () => {
+  $('#milestones').appendChild(milestoneRow());
+  updateProgress();
+});
+
+document.addEventListener('click', (e) => {
+  if (e.target.classList.contains('remove')) {
+    e.target.closest('.lane-item, .milestone')?.remove();
+    updateProgress();
+    if ($('#autoSave').checked) storeLocal();
   }
 });
-timeline.addEventListener('change',updateMsBar);
 
-function updateMsBar(){
-  const rows = $$('.milestone', timeline);
-  const total = rows.length || 1;
-  const done = rows.filter(r=>r.querySelector('input[type="checkbox"]').checked).length;
-  const pct = Math.round(done*100/total);
-  $('#msBar').style.width = pct + '%';
-  $('#msBar').title = pct + '% complete';
-  updateCompletion();
-}
+document.addEventListener('input', () => {
+  updateProgress();
+  if ($('#autoSave').checked) storeLocal();
+});
+document.addEventListener('change', () => {
+  updateProgress();
+  if ($('#autoSave').checked) storeLocal();
+});
 
-// KPI sliders
-function bindKPI(id,max=100){
-  const rng = $('#'+id);
-  const val = $('#'+id+'_val');
-  const bar = $('#'+id+'_bar');
-  const updater = ()=>{
-    const v = Number(rng.value);
-    val.textContent = v;
-    bar.style.width = (max===10 ? v*10 : v) + '%';
-  };
-  rng.addEventListener('input', updater);
-  updater();
-}
-bindKPI('kpi_time');
-bindKPI('kpi_ts');
-bindKPI('kpi_rw');
-bindKPI('kpi_cs',10);
-
-// Save and load
-function snapshot(){
-  return {
-    f:{
-      name:$('#f_name').value,client:$('#f_client').value,no:$('#f_no').value,
-      pm:$('#f_pm').value,type:$('#f_type').value,loc:$('#f_loc').value,summary:$('#f_summary').value,
-      budget:$('#f_budget').value,hours:$('#f_hours').value,wbs:$('#f_wbs').value
-    },
-    scope: $$('#scopeList input').map(x=>x.checked),
-    scope_notes: $('#scope_notes').value,
-    review_schedule: $('#review_schedule').value,
-    stakeholders: $('#stakeholders').value,
-    risk_notes: $('#risk_notes').value,
-    steps: $$('#processSteps input[type="checkbox"]').map(x=>x.checked),
-    qa: $$('#qaList input[type="checkbox"]').map(x=>x.checked),
-    cadence: $('#cadence').value,
-    change: $('#change').value,
-    doc_standards: $('#doc_standards').value,
-    efficiency_tools: $('#efficiency_tools').value,
-    comm_log: $('#comm_log').value,
-    actual_hours: $('#actual_hours').value,
-    efficiency_rating: $('#efficiency_rating').value,
-    optimization_notes: $('#optimization_notes').value,
-    ms: $$('.milestone').map(r=>{
-      const inputs=$$('input',r);
-      return {name:inputs[0].value,date:inputs[1].value,deliverable:inputs[2].value,done:inputs[3].checked};
-    }),
-    kpi:{
-      time:$('#kpi_time').value,ts:$('#kpi_ts').value,rw:$('#kpi_rw').value,cs:$('#kpi_cs').value,
-      standards:$('#kpi_standards').value,improvement:$('#kpi_improvement').value,
-      knowledge:$('#kpi_knowledge').value,team:$('#kpi_team').value
-    },
-    sustainability_notes: $('#sustainability_notes').value,
-    compact: $('#compactTog').checked
-  };
-}
-function apply(data){
-  if(!data) return;
-  $('#f_name').value=data?.f?.name||'';
-  $('#f_client').value=data?.f?.client||'';
-  $('#f_no').value=data?.f?.no||'';
-  $('#f_pm').value=data?.f?.pm||'';
-  $('#f_type').value=data?.f?.type||'';
-  $('#f_loc').value=data?.f?.loc||'';
-  $('#f_summary').value=data?.f?.summary||'';
-  $('#f_budget').value=data?.f?.budget||'';
-  $('#f_hours').value=data?.f?.hours||'';
-  $('#f_wbs').value=data?.f?.wbs||'';
-  $$('#scopeList input').forEach((x,i)=>x.checked=!!data.scope?.[i]);
-  $('#scope_notes').value=data.scope_notes||'';
-  $('#review_schedule').value=data.review_schedule||'';
-  $('#stakeholders').value=data.stakeholders||'';
-  $('#risk_notes').value=data.risk_notes||'';
-  $$('#processSteps input[type="checkbox"]').forEach((x,i)=>x.checked=!!data.steps?.[i]);
-  $$('#qaList input[type="checkbox"]').forEach((x,i)=>x.checked=!!data.qa?.[i]);
-  $('#cadence').value=data.cadence||'';
-  $('#change').value=data.change||'';
-  $('#doc_standards').value=data.doc_standards||'';
-  $('#efficiency_tools').value=data.efficiency_tools||'';
-  $('#comm_log').value=data.comm_log||'';
-  $('#actual_hours').value=data.actual_hours||'';
-  $('#efficiency_rating').value=data.efficiency_rating||'';
-  $('#optimization_notes').value=data.optimization_notes||'';
-  timeline.innerHTML='';
-  (data.ms||[]).forEach(addMilestone);
-  if(!(data.ms||[]).length){ ['Internal kickoff','30 percent review','60 percent review','90 percent QA QC','Issued for Tender','Issued for Construction','Substantial completion'].forEach((n)=>addMilestone({name:n, date:'', deliverable:''})); }
-  $('#kpi_time').value = data.kpi?.time ?? 70;
-  $('#kpi_ts').value = data.kpi?.ts ?? 80;
-  $('#kpi_rw').value = data.kpi?.rw ?? 85;
-  $('#kpi_cs').value = data.kpi?.cs ?? 8;
-  $('#kpi_standards').value = data.kpi?.standards ?? 90;
-  $('#kpi_improvement').value = data.kpi?.improvement ?? 75;
-  $('#kpi_knowledge').value = data.kpi?.knowledge ?? 80;
-  $('#kpi_team').value = data.kpi?.team ?? 8;
-  bindKPI('kpi_time'); bindKPI('kpi_ts'); bindKPI('kpi_rw'); bindKPI('kpi_cs',10);
-  bindKPI('kpi_standards'); bindKPI('kpi_improvement'); bindKPI('kpi_knowledge'); bindKPI('kpi_team',10);
-  $('#sustainability_notes').value=data.sustainability_notes||'';
-  $('#compactTog').checked = !!data.compact;
-  applyCompact();
-  refreshDone(); updateMsBar();
-}
-function saveToLocal(){
-  localStorage.setItem(storeKey, JSON.stringify(snapshot()));
-}
-function loadFromLocal(){
-  const raw = localStorage.getItem(storeKey);
-  if(raw) apply(JSON.parse(raw));
-  else apply({});
-}
-$('#saveBtn').addEventListener('click', ()=>{
-  const data = JSON.stringify(snapshot(), null, 2);
-  const blob = new Blob([data], {type:'application/json'});
+$('#saveBtn').addEventListener('click', () => {
+  const blob = new Blob([JSON.stringify(snapshot(), null, 2)], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = 'aes_pep.json';
+  a.download = 'aes_pep_studio.json';
   a.click();
   URL.revokeObjectURL(a.href);
 });
-$('#loadBtn').addEventListener('click', ()=>$('#fileInput').click());
-$('#fileInput').addEventListener('change', (e)=>{
-  const file=e.target.files[0]; if(!file) return;
-  const fr=new FileReader();
-  fr.onload=()=>{ try{ apply(JSON.parse(fr.result)); if($('#autoSave').checked) saveToLocal(); }catch(err){ alert('Could not read file'); } };
+$('#loadBtn').addEventListener('click', () => $('#fileInput').click());
+$('#fileInput').addEventListener('change', (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  const fr = new FileReader();
+  fr.onload = () => {
+    try { apply(JSON.parse(fr.result)); } catch { alert('Invalid JSON file.'); }
+  };
   fr.readAsText(file);
 });
-$('#resetBtn').addEventListener('click', ()=>{ localStorage.removeItem(storeKey); location.reload(); });
-
-// Auto save toggle
-$('#autoSave').addEventListener('change', (e)=>{
-  if(e.target.checked) saveToLocal();
+$('#printBtn').addEventListener('click', () => window.print());
+$('#resetBtn').addEventListener('click', () => {
+  localStorage.removeItem(STORE_KEY);
+  seed();
+  apply({});
 });
-document.addEventListener('input', ()=>{
-  if($('#autoSave').checked){
-    saveToLocal();
-  }
-  updateCompletion();
-});
+$('#themeSelect').addEventListener('change', (e) => applyTheme(e.target.value));
 
-// Print
-$('#printBtn').addEventListener('click', ()=>window.print());
-
-// Compact print mode
-function applyCompact(){
-  document.body.classList.toggle('compact', $('#compactTog').checked);
-}
-$('#compactTog').addEventListener('change', applyCompact);
-
-// Theme handling
-function applyTheme(theme){
-  const selected = theme || 'default';
-  document.documentElement.dataset.theme = selected;
-  $('#themeSelect').value = selected;
-  localStorage.setItem(themeKey, selected);
-}
-$('#themeSelect').addEventListener('change', (e)=>applyTheme(e.target.value));
-
-// Completion tracking
-const trackedFields = [
-  'f_name','f_client','f_no','f_pm','f_type','f_loc','f_budget','f_hours',
-  'f_summary','f_wbs','scope_notes','review_schedule','stakeholders','risk_notes',
-  'cadence','change','doc_standards','efficiency_tools','comm_log','actual_hours',
-  'efficiency_rating','optimization_notes','sustainability_notes'
-];
-function isFilled(el){
-  if(!el) return false;
-  if(el.type === 'checkbox') return el.checked;
-  if(el.type === 'number') return el.value !== '';
-  return String(el.value || '').trim().length > 0;
-}
-function updateCompletion(){
-  const fieldEls = trackedFields.map(id=>$('#'+id)).filter(Boolean);
-  let total = fieldEls.length;
-  let done = fieldEls.filter(isFilled).length;
-
-  const scopeChecks = $$('#scopeList input');
-  const processChecks = $$('#processSteps input[type="checkbox"]');
-  const qaChecks = $$('#qaList input[type="checkbox"]');
-  const milestoneChecks = $$('.milestone input[type="checkbox"]');
-
-  total += scopeChecks.length + processChecks.length + qaChecks.length + milestoneChecks.length;
-  done += scopeChecks.filter(c=>c.checked).length;
-  done += processChecks.filter(c=>c.checked).length;
-  done += qaChecks.filter(c=>c.checked).length;
-  done += milestoneChecks.filter(c=>c.checked).length;
-
-  const checklistTotal = scopeChecks.length + processChecks.length + qaChecks.length;
-  const checklistDone = scopeChecks.filter(c=>c.checked).length +
-    processChecks.filter(c=>c.checked).length +
-    qaChecks.filter(c=>c.checked).length;
-
-  const milestonesTotal = milestoneChecks.length || 1;
-  const milestonesDone = milestoneChecks.filter(c=>c.checked).length;
-
-  const overallPct = total ? Math.round((done / total) * 100) : 0;
-  const checklistPct = checklistTotal ? Math.round((checklistDone / checklistTotal) * 100) : 0;
-  const milestonePct = Math.round((milestonesDone / milestonesTotal) * 100);
-
-  $('#overallPct').textContent = overallPct;
-  $('#checklistPct').textContent = checklistPct;
-  $('#milestonePct').textContent = milestonePct;
-  $('#overallBar').style.width = overallPct + '%';
-}
-
-// Provide some defaults on first load
-loadFromLocal();
-applyTheme(localStorage.getItem(themeKey) || 'default');
-if(!localStorage.getItem(storeKey)){
-  // seed defaults for first view
+seed();
+const cached = localStorage.getItem(STORE_KEY);
+if (cached) {
+  try { apply(JSON.parse(cached)); } catch { apply({}); }
+} else {
   apply({});
 }
-updateCompletion();
-
-// Accessibility improvements for keyboard navigation
-$$('button, input, select, textarea').forEach(el=>{ el.addEventListener('keyup', (e)=>{ if(e.key==='Enter' && el.tagName==='BUTTON') el.click(); }); });
+applyTheme(localStorage.getItem(THEME_KEY));
+updateProgress();
