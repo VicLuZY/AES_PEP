@@ -1,225 +1,250 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="default">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>AES Engineering — Project Execution Plan (PEP)</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,700;1,400;1,700&display=swap">
-<style>
-  :root{
-    --aes-green:#00a389;
-    --aes-green-dark:#008a73;
-    --aes-green-light:#e6f7f4;
-    --aes-gray:#6b7280;
-    --aes-light:#f8fafc;
-    --aes-accent:#00a389;
-    --aes-white:#ffffff;
-    --aes-black:#1a1a1a;
-    --bad:#dc2626;
-  }
-  *{box-sizing:border-box}
-  html,body{margin:0;padding:0;font-family:'Montserrat',system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--aes-black);line-height:1.6}
-  header{
-    background:linear-gradient(90deg,var(--aes-green),var(--aes-green-dark));
-    color:#fff;padding:20px 16px;display:flex;align-items:center;gap:18px;flex-wrap:wrap
-  }
-  header .logo{
-    width:56px;height:56px;border:2px solid rgba(255,255,255,.7);
-    display:grid;place-items:center;border-radius:10px;font-weight:800;letter-spacing:.06em
-  }
-  header h1{font-size:1.45rem;margin:0}
-  header p{margin:0;opacity:.9}
-  main{padding:18px;max-width:1200px;margin:0 auto}
-  .grid{display:grid;gap:16px}
-  @media (min-width: 900px){ .grid{grid-template-columns: 1.1fr 1fr} }
-  section{background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,0.04);transition:box-shadow 0.2s ease}
-  h2{font-size:1.1rem;margin:0 0 10px;color:var(--aes-green);letter-spacing:.02em}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  label{font-size:.9rem;color:var(--aes-gray)}
-  input[type="text"],input[type="date"],input[type="number"],textarea,select{
-    width:100%;padding:12px;border:1px solid #d1d5db;border-radius:12px;background:#fff;font-family:inherit;transition:border-color 0.2s ease,box-shadow 0.2s ease
-  }
-  input[type="text"]:focus,input[type="date"]:focus,input[type="number"]:focus,textarea:focus,select:focus{
-    outline:none;border-color:var(--aes-green);box-shadow:0 0 0 3px rgba(0,163,137,0.1)
-  }
-  textarea{min-height:80px;resize:vertical}
-  .small{font-size:.82rem;color:var(--aes-gray)}
-  .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 10px;border-radius:999px;background:var(--aes-green-light);border:1px solid var(--aes-green);margin:4px 6px 0 0}
-  .pill input{transform:scale(1.1)}
-  .actions{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 0}
-  button{
-    background:var(--aes-green);color:#fff;border:none;border-radius:12px;padding:12px 18px;cursor:pointer;font-weight:600;font-family:inherit;transition:all 0.2s ease;box-shadow:0 2px 4px rgba(0,163,137,0.2)
-  }
-  button:hover{background:var(--aes-green-dark);transform:translateY(-1px);box-shadow:0 4px 8px rgba(0,163,137,0.3)}
-  button.secondary{background:#fff;color:var(--aes-green);border:1px solid var(--aes-green);box-shadow:0 2px 4px rgba(0,163,137,0.1)}
-  button.secondary:hover{background:var(--aes-green-light);transform:translateY(-1px)}
-  button.ghost{background:#fff;color:#111;border:1px solid #d1d5db;box-shadow:none}
-  button.ghost:hover{background:#f9fafb;transform:translateY(-1px)}
-  .timeline{display:grid;gap:8px}
-  .milestone{display:grid;grid-template-columns: 1fr 140px 150px 32px; gap:10px;align-items:center}
-  .milestone input{padding:8px}
-  .milestone .del{background:#fff;border:1px solid #d1d5db;color:#444;border-radius:8px}
-  .bar{height:12px;background:#e5e7eb;border-radius:999px;overflow:hidden}
-  .bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--aes-green),var(--aes-green-dark));width:0%}
-  .kpis{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media (min-width: 900px){ .kpis{grid-template-columns: repeat(4,1fr)} }
-  .kpi{border:1px solid #e5e7eb;border-radius:12px;padding:10px}
-  .kpi h3{font-size:.95rem;margin:0 0 6px}
-  .kpi .value{display:flex;align-items:center;gap:8px}
-  .kpi input[type="range"]{width:100%}
-  .process{display:grid;gap:10px}
-  .step{border:1px solid #e5e7eb;border-radius:12px;padding:12px;display:grid;grid-template-columns: 24px 1fr auto;gap:10px;align-items:center;background:var(--aes-green-light)}
-  .step input[type="checkbox"]{transform:scale(1.2)}
-  .step h4{margin:0;font-size:1rem;color:#0d253f}
-  .step p{margin:2px 0 0;color:#334155;font-size:.92rem}
-  .muted{color:var(--aes-gray)}
-  .footer{
-    margin:18px 0 60px;border:1px dashed #d1d5db;border-radius:12px;padding:14px;text-align:center;background:#fbfcff
-  }
-  .quote{font-weight:800;letter-spacing:.02em}
-  .danger{color:var(--bad)}
-  .tag{font-size:.78rem;padding:4px 8px;border:1px solid #d1d5db;border-radius:999px;color:#374151;background:#fff}
-  .flex{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
-  .print-note{font-size:.8rem;color:#6b7280}
-  .hidden{display:none !important}
-</style>
+<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header>
   <div class="logo" aria-label="AES logo">AES</div>
   <div>
     <h1>AES Engineering — Project Execution Plan</h1>
-    <p>Interactive PEP built on PROCESS methodology: Plan, Review, Own, Communicate, Execute, Serve, Sustain.</p>
+    <p>Interactive PEP built on Plan, Review, Own, Communicate, Execute, Serve, Sustain. Use it to align scope, quality, and delivery from kickoff to closeout.</p>
   </div>
 </header>
 
 <main>
-  <div class="grid">
-    <section aria-labelledby="ov">
-      <h2 id="ov">1. P - Plan with Precision</h2>
-      <div class="row">
-        <div>
-          <label>Project name</label>
-          <input id="f_name" type="text" placeholder="Example: Murray Manor Generator Replacement" />
-        </div>
-        <div>
-          <label>Client</label>
-          <input id="f_client" type="text" placeholder="Example: BC Housing" />
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label>AES project number</label>
-          <input id="f_no" type="text" placeholder="e.g., 24-1234" />
-        </div>
-        <div>
-          <label>Project manager</label>
-          <input id="f_pm" type="text" placeholder="Name, P.Eng." />
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label>Project type</label>
-          <select id="f_type">
-            <option value="">Select…</option>
-            <option>New build</option>
-            <option>Renovation</option>
-            <option>Tenant improvement</option>
-            <option>Feasibility</option>
-          </select>
-        </div>
-        <div>
-          <label>Location</label>
-          <input id="f_loc" type="text" placeholder="City, Province" />
-        </div>
-      </div>
-      <div class="row">
-        <div>
-          <label>Budget estimate</label>
-          <input id="f_budget" type="number" placeholder="Project budget in CAD" />
-        </div>
-        <div>
-          <label>Estimated hours</label>
-          <input id="f_hours" type="number" placeholder="Total estimated hours" />
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Project success criteria & constraints</label>
-        <textarea id="f_summary" placeholder="Define what success looks like, key constraints, and project boundaries."></textarea>
-      </div>
-      <div style="margin-top:10px">
-        <label>Work Breakdown Structure (WBS) Notes</label>
-        <textarea id="f_wbs" placeholder="Key deliverables, phases, and major work packages."></textarea>
-      </div>
-      <div class="actions">
-        <button id="saveBtn" class="secondary">Save to file</button>
-        <label class="pill"><input type="checkbox" id="autoSave"> Auto save to browser</label>
-        <label class="pill"><input type="checkbox" id="compactTog"> Compact print mode</label>
-      </div>
-      <p class="print-note">Tip: use the Print button at the bottom to produce a PDF.</p>
-    </section>
-
-    <section aria-labelledby="scope">
-      <h2 id="scope">2. R - Review & Reinforce Planning</h2>
-      <div class="flex small muted">Toggle what is included. Write details in Notes.</div>
-      <div id="scopeList" class="actions" aria-live="polite">
-        <!-- pills injected by JS -->
-      </div>
-      <div style="margin-top:10px">
-        <label>Detailed scope clarifications</label>
-        <textarea id="scope_notes" placeholder="Add clarifications such as EVEMS testing, BESS feasibility, or utility coordination."></textarea>
-      </div>
-      <div class="row" style="margin-top:10px">
-        <div>
-          <label>Review schedule</label>
-          <select id="review_schedule">
-            <option value="">Select review frequency</option>
-            <option>Weekly</option>
-            <option>Bi-weekly</option>
-            <option>Monthly</option>
-            <option>As needed</option>
-          </select>
-        </div>
-        <div>
-          <label>Key stakeholders</label>
-          <input id="stakeholders" type="text" placeholder="Client PM, Architect, Contractor, etc." />
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Risk assessment & mitigation</label>
-        <textarea id="risk_notes" placeholder="Identify potential risks and mitigation strategies."></textarea>
-      </div>
-    </section>
-  </div>
-
-  <section aria-labelledby="proc">
+  <section class="control-panel" aria-labelledby="control">
     <div class="flex" style="justify-content:space-between;align-items:center;">
-      <h2 id="proc">3. PROCESS stepper</h2>
-      <span class="tag"><span id="doneCount">0</span>/7 steps done</span>
+      <h2 id="control">PEP Control Center</h2>
+      <span class="tag">Guided workflow + theme controls</span>
     </div>
-    <div class="process" id="processSteps">
-      <!-- steps injected by JS -->
+    <p class="section-intro">Start here each session. Save, load, and print your plan, then jump to any section or switch to your preferred theme.</p>
+    <div class="control-grid">
+      <div class="control-card">
+        <h3>Quick actions</h3>
+        <div class="actions">
+          <button id="saveBtn" class="secondary">Save to file</button>
+          <button id="loadBtn" class="ghost">Load from file</button>
+          <button id="printBtn" class="ghost">Print or save PDF</button>
+          <button id="resetBtn" class="ghost">Reset</button>
+        </div>
+        <input id="fileInput" type="file" accept=".json" class="hidden" />
+        <div class="callout">Tip: enable Auto save to keep progress in your browser between sessions. Use Save to file to share the plan with your team.</div>
+      </div>
+      <div class="control-card">
+        <h3>Progress overview</h3>
+        <div class="progress-meta">
+          <div class="metric"><b><span id="overallPct">0</span>%</b>Overall completion</div>
+          <div class="metric"><b><span id="checklistPct">0</span>%</b>Checklist status</div>
+          <div class="metric"><b><span id="milestonePct">0</span>%</b>Milestones done</div>
+        </div>
+        <div class="progress-bar"><span id="overallBar"></span></div>
+        <p class="small muted">Completion is calculated from key fields, checklists, and milestones. Update as you progress to keep the plan current.</p>
+        <div class="tip-box">
+          <strong>Suggested flow:</strong>
+          <ol class="list">
+            <li>Complete Plan and Review sections.</li>
+            <li>Confirm readiness and quality checks.</li>
+            <li>Align schedule milestones, then review KPIs.</li>
+          </ol>
+        </div>
+        <div class="tip-box">
+          <strong>Critical missing items</strong>
+          <ul id="missingItems" class="list"></ul>
+        </div>
+      </div>
+      <div class="control-card">
+        <h3>Preferences</h3>
+        <label for="themeSelect">Color theme</label>
+        <select id="themeSelect" class="select">
+          <option value="default">AES Green</option>
+          <option value="midnight">Midnight</option>
+          <option value="sandstone">Sandstone</option>
+        </select>
+        <div class="actions">
+          <label class="pill"><input type="checkbox" id="autoSave"> Auto save to browser</label>
+          <label class="pill"><input type="checkbox" id="compactTog"> Compact print mode</label>
+        </div>
+        <p class="helper">Compact mode reduces spacing for PDF exports and printouts.</p>
+        <div class="toc">
+          <a href="#readme">Jump to Readme <span>1 →</span></a>
+          <a href="#ov">Jump to Plan <span>2 →</span></a>
+          <a href="#scope">Jump to Review <span>3 →</span></a>
+          <a href="#sched">Jump to Schedule <span>4 →</span></a>
+          <a href="#qa">Jump to Communication & Execution <span>5 →</span></a>
+          <a href="#kpi">Jump to Service Standards & Sustainability <span>6 →</span></a>
+          <a href="#team">Jump to Team Sign-off Gate <span>7 →</span></a>
+        </div>
+      </div>
+      <div class="control-card">
+        <h3>Multi-role release gate</h3>
+        <p class="small muted">The plan is not release-ready until all review roles provide feedback and approve.</p>
+        <div class="tip-box">
+          <strong id="releaseStatus">Release readiness: Blocked</strong>
+          <div class="helper" id="releaseCount">Approvals: 0/5 complete</div>
+          <ul class="list" id="releaseGaps"></ul>
+        </div>
+        <div class="callout">Roles included: Project Manager, Scrum Master, PMP Consultant, UX/UI Consultant, Software Developer.</div>
+      </div>
     </div>
   </section>
 
-  <div class="grid">
-    <section aria-labelledby="sched">
-      <div class="flex" style="justify-content:space-between;align-items:center;">
-        <h2 id="sched">4. O - Own & Optimize Schedule</h2>
+  <section aria-labelledby="readme">
+    <div class="section-header">
+      <h2 id="readme">Project Execution Plan Readme</h2>
+      <span class="status-pill" id="status-readme">Guidance</span>
+    </div>
+    <p class="section-intro">Use this page as a living plan. Update it at each phase gate and share it with stakeholders for alignment.</p>
+    <div class="tip-box">
+      <strong>How to use this tool</strong>
+      <ul class="list">
+        <li>Complete the Plan section first to establish scope, success criteria, and constraints.</li>
+        <li>Confirm scope inclusions and document risks before execution begins.</li>
+        <li>Define milestones and track hours, then update quality and communication items weekly.</li>
+        <li>Review KPIs monthly and capture reusable improvements for future projects.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="ov">
+    <div class="section-header">
+      <h2 id="ov">1. Plan with Precision</h2>
+      <span class="status-pill" id="status-plan">Not started</span>
+    </div>
+    <p class="section-intro">Capture the essential project definition, constraints, and baseline expectations. Be specific so downstream decisions are aligned.</p>
+    <div class="row">
+      <div class="field-group">
+        <label>Project name</label>
+        <input id="f_name" type="text" placeholder="Example: Murray Manor Generator Replacement" />
+        <div class="helper">Use the official project title from the proposal or contract.</div>
+      </div>
+      <div class="field-group">
+        <label>Client</label>
+        <input id="f_client" type="text" placeholder="Example: BC Housing" />
+        <div class="helper">Include client department or business unit if relevant.</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field-group">
+        <label>AES project number</label>
+        <input id="f_no" type="text" placeholder="e.g., 24-1234" />
+      </div>
+      <div class="field-group">
+        <label>Project manager</label>
+        <input id="f_pm" type="text" placeholder="Name, P.Eng." />
+        <div class="helper">Primary point of contact responsible for schedule and scope.</div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field-group">
+        <label>Project type</label>
+        <select id="f_type">
+          <option value="">Select…</option>
+          <option>New build</option>
+          <option>Renovation</option>
+          <option>Tenant improvement</option>
+          <option>Feasibility</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Location</label>
+        <input id="f_loc" type="text" placeholder="City, Province (include site name if multiple)" />
+      </div>
+    </div>
+    <div class="row">
+      <div class="field-group">
+        <label>Budget estimate</label>
+        <input id="f_budget" type="number" placeholder="Project budget in CAD (base + contingency)" />
+        <div class="helper">Use the most recent cost estimate and note if it is preliminary.</div>
+      </div>
+      <div class="field-group">
+        <label>Estimated hours</label>
+        <input id="f_hours" type="number" placeholder="Total estimated hours (all disciplines)" />
+      </div>
+    </div>
+    <div style="margin-top:10px">
+      <label>Project success criteria & constraints</label>
+      <textarea id="f_summary" placeholder="Define what success looks like, key constraints, and project boundaries."></textarea>
+      <ul class="list">
+        <li>Success criteria (performance, safety, client expectations).</li>
+        <li>Constraints (budget caps, schedule windows, site access).</li>
+        <li>Assumptions requiring confirmation.</li>
+      </ul>
+    </div>
+    <div style="margin-top:10px">
+      <label>Work Breakdown Structure (WBS) Notes</label>
+      <textarea id="f_wbs" placeholder="Key deliverables, phases, and major work packages."></textarea>
+      <div class="helper">Break down by phase (e.g., DD, CD, CA) and include key deliverables.</div>
+    </div>
+    <p class="print-note">Tip: use Control Center actions above to save, print, or reset.</p>
+  </section>
+
+  <section aria-labelledby="scope">
+    <div class="section-header">
+      <h2 id="scope">2. Review & Reinforce Planning</h2>
+      <span class="status-pill" id="status-review">Not started</span>
+    </div>
+    <p class="section-intro">Confirm the scope items included in this contract and add clarifications for anything custom or excluded.</p>
+    <div class="flex small muted">Toggle what is included. Add details in Notes for exclusions or special requirements.</div>
+    <div id="scopeList" class="actions" aria-live="polite">
+      <!-- pills injected by JS -->
+    </div>
+    <div style="margin-top:10px">
+      <label>Detailed scope clarifications</label>
+      <textarea id="scope_notes" placeholder="Add clarifications such as EVEMS testing, BESS feasibility, or utility coordination."></textarea>
+      <div class="helper">Note any owner-provided items, coordination boundaries, and deliverable ownership.</div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div class="field-group">
+        <label>Review schedule</label>
+        <select id="review_schedule">
+          <option value="">Select review frequency</option>
+          <option>Weekly</option>
+          <option>Bi-weekly</option>
+          <option>Monthly</option>
+          <option>As needed</option>
+        </select>
+      </div>
+      <div class="field-group">
+        <label>Key stakeholders</label>
+        <input id="stakeholders" type="text" placeholder="Client PM, Architect, Contractor, Authority Having Jurisdiction" />
+      </div>
+    </div>
+    <div style="margin-top:10px">
+      <label>Risk assessment & mitigation</label>
+      <textarea id="risk_notes" placeholder="Identify potential risks and mitigation strategies."></textarea>
+      <ul class="list">
+        <li>Top 3 project risks and their triggers.</li>
+        <li>Mitigation actions and responsible owner.</li>
+        <li>Required decisions or approvals.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="sched">
+    <div class="flex" style="justify-content:space-between;align-items:center;">
+      <h2 id="sched">3. Own & Optimize Schedule</h2>
         <button id="addM" class="ghost">Add milestone</button>
       </div>
+      <span class="status-pill" id="status-schedule">Not started</span>
+      <p class="section-intro">Define key dates and deliverables. Keep milestones measurable with clear outputs.</p>
       <div class="timeline" id="timeline"></div>
       <div style="margin-top:8px">
         <div class="bar"><span id="msBar"></span></div>
         <div class="small muted">Completion based on milestones checked complete.</div>
       </div>
       <div class="row" style="margin-top:15px">
-        <div>
+        <div class="field-group">
           <label>Actual vs. estimated hours</label>
           <input id="actual_hours" type="number" placeholder="Actual hours logged" />
+          <div class="helper">Track hours monthly or per phase for accurate efficiency assessment.</div>
         </div>
-        <div>
+        <div class="field-group">
           <label>Efficiency rating</label>
           <select id="efficiency_rating">
             <option value="">Select efficiency</option>
@@ -233,43 +258,56 @@
       <div style="margin-top:10px">
         <label>Lessons learned & optimization notes</label>
         <textarea id="optimization_notes" placeholder="What worked well? What can be improved? Process improvements identified."></textarea>
+        <div class="helper">Capture improvement actions and the owner responsible for follow-through.</div>
       </div>
-    </section>
+  </section>
 
-    <section aria-labelledby="qa">
-      <h2 id="qa">5. C - Communicate & E - Execute</h2>
+  <section aria-labelledby="qa">
+      <div class="section-header">
+        <h2 id="qa">4. Communication & Execution</h2>
+        <span class="status-pill" id="status-execution">Not started</span>
+      </div>
+      <p class="section-intro">Document communication cadence, decision logs, and QA/QC readiness to keep delivery aligned.</p>
       <div class="flex small muted">Use checkboxes to track readiness and quality.</div>
       <div class="process" id="qaList"></div>
       <hr style="border:none;border-top:1px solid #eee;margin:10px 0" />
       <div class="row">
-        <div>
+        <div class="field-group">
           <label>Client communication cadence</label>
           <input id="cadence" type="text" placeholder="Biweekly coordination call; written update every Friday" />
+          <div class="helper">Include meetings, reports, and signoff checkpoints.</div>
         </div>
-        <div>
+        <div class="field-group">
           <label>Change management process</label>
           <input id="change" type="text" placeholder="Scope Change Request form before work" />
+          <div class="helper">Define decision authority and approval turnaround targets.</div>
         </div>
       </div>
       <div class="row" style="margin-top:10px">
-        <div>
+        <div class="field-group">
           <label>Documentation standards</label>
           <input id="doc_standards" type="text" placeholder="AES templates, drawing standards, etc." />
+          <div class="helper">List templates, file naming, and review checklists.</div>
         </div>
-        <div>
+        <div class="field-group">
           <label>Execution efficiency tools</label>
           <input id="efficiency_tools" type="text" placeholder="Software, checklists, automation used" />
+          <div class="helper">Note automation, reusable templates, or modeling tools used.</div>
         </div>
       </div>
       <div style="margin-top:10px">
         <label>Communication log & decisions</label>
         <textarea id="comm_log" placeholder="Key decisions, client feedback, and important communications."></textarea>
+        <div class="helper">Capture dates, decision owners, and next actions.</div>
       </div>
-    </section>
-  </div>
+  </section>
 
   <section aria-labelledby="kpi">
-    <h2 id="kpi">6. S1 - Serve with Standards & S2 - Sustain</h2>
+    <div class="section-header">
+      <h2 id="kpi">5. Service Standards & Sustainability</h2>
+      <span class="status-pill" id="status-sustainability">Not started</span>
+    </div>
+    <p class="section-intro">Track performance outcomes and capture long-term improvements that can be reused on future projects.</p>
     <div class="kpis">
       <div class="kpi">
         <h3>On time deliverables</h3>
@@ -317,294 +355,53 @@
     <div style="margin-top:15px">
       <label>Sustainability & scaling notes</label>
       <textarea id="sustainability_notes" placeholder="What processes can be improved? What tools/templates can be reused? What knowledge should be captured for future projects?"></textarea>
+      <ul class="list">
+        <li>Reusable templates, checklists, or models.</li>
+        <li>Lessons learned to share with the team.</li>
+        <li>Training needs or process gaps.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section aria-labelledby="team">
+    <div class="section-header">
+      <h2 id="team">6. Team Sign-off Gate</h2>
+      <span class="status-pill" id="status-team">Not started</span>
+    </div>
+    <p class="section-intro">Capture explicit feedback from each role and check approval before final release or handoff.</p>
+    <div class="field-group" style="margin-bottom:12px">
+      <label>Project Manager feedback</label>
+      <textarea id="fb_pm" placeholder="Scope alignment, client concerns, and release confidence."></textarea>
+      <label class="pill"><input type="checkbox" id="ok_pm"> Project Manager sign-off complete</label>
+    </div>
+    <div class="field-group" style="margin-bottom:12px">
+      <label>Scrum Master feedback</label>
+      <textarea id="fb_sm" placeholder="Delivery flow, blockers, throughput, and risk to commitments."></textarea>
+      <label class="pill"><input type="checkbox" id="ok_sm"> Scrum Master sign-off complete</label>
+    </div>
+    <div class="field-group" style="margin-bottom:12px">
+      <label>PMP Consultant feedback</label>
+      <textarea id="fb_pmp" placeholder="Governance, baseline control, stakeholder management, and risk plan quality."></textarea>
+      <label class="pill"><input type="checkbox" id="ok_pmp"> PMP Consultant sign-off complete</label>
+    </div>
+    <div class="field-group" style="margin-bottom:12px">
+      <label>UX/UI Consultant feedback</label>
+      <textarea id="fb_ux" placeholder="Usability, accessibility, readability, and information hierarchy observations."></textarea>
+      <label class="pill"><input type="checkbox" id="ok_ux"> UX/UI Consultant sign-off complete</label>
+    </div>
+    <div class="field-group" style="margin-bottom:12px">
+      <label>Expert Software Developer feedback</label>
+      <textarea id="fb_dev" placeholder="Code quality, maintainability, performance, and reliability notes."></textarea>
+      <label class="pill"><input type="checkbox" id="ok_dev"> Software Developer sign-off complete</label>
     </div>
   </section>
 
   <div class="footer">
     <div class="quote">Strong process. Strong performance.</div>
-    <div class="actions" style="justify-content:center;margin-top:8px">
-      <button id="printBtn" class="secondary">Print or save to PDF</button>
-      <button id="loadBtn" class="ghost">Load from file</button>
-      <input id="fileInput" type="file" accept=".json" class="hidden" />
-      <button id="resetBtn" class="ghost">Reset</button>
-    </div>
     <div class="print-note">The page stores to your browser if Auto save is enabled. Save to file to move it between devices.</div>
   </div>
 </main>
 
-<script>
-// UTIL
-const $ = (q,ctx=document)=>ctx.querySelector(q);
-const $$ = (q,ctx=document)=>Array.from(ctx.querySelectorAll(q));
-const storeKey='aes_pep_v1';
-
-// SCOPE pills
-const scopeItems=[
-  'Design development','Construction documentation','Contract administration',
-  'Commissioning support','Utility coordination','Cost estimate Class D',
-  'Solar or BESS feasibility','EV infrastructure and EVEMS','Fire alarm and life safety',
-  'Lighting and controls','Power distribution and single line','Specifications',
-  'Site reviews and reports','As-built review and record drawings'
-];
-const scopeList = $('#scopeList');
-scopeItems.forEach((name,i)=>{
-  const id='sc'+i;
-  const pill=document.createElement('label');
-  pill.className='pill';
-  pill.innerHTML=`<input type="checkbox" id="${id}"><span>${name}</span>`;
-  scopeList.appendChild(pill);
-});
-
-// PROCESS steps
-const steps=[
-  {k:'P', t:'Plan with precision', d:'Define scope, deliverables, WBS, hours and schedule before work starts.'},
-  {k:'R', t:'Review and reinforce', d:'Hold design reviews at 30 60 90 percent and close loops weekly.'},
-  {k:'O', t:'Own and optimize', d:'Own outcomes and improve how work is delivered using data and feedback.'},
-  {k:'C', t:'Communicate clearly', d:'Share updates early, document decisions and avoid surprises.'},
-  {k:'E', t:'Execute with efficiency', d:'Deliver on time with templates and standards while reducing waste.'},
-  {k:'S1', t:'Serve with standards', d:'Treat clients and teammates with professionalism and meet AES quality bar.'},
-  {k:'S2', t:'Sustain and scale', d:'Capture lessons, update tools and reuse what works.'}
-];
-const processWrap=$('#processSteps');
-steps.forEach((s,idx)=>{
-  const div=document.createElement('div');
-  div.className='step';
-  div.innerHTML=`<input type="checkbox" data-step="${s.k}">
-    <div>
-      <h4>${s.t}</h4>
-      <p>${s.d}</p>
-    </div>
-    <span class="tag">Step ${idx+1}</span>`;
-  processWrap.appendChild(div);
-});
-
-function refreshDone(){
-  const done = $$('#processSteps input[type="checkbox"]:checked').length;
-  $('#doneCount').textContent = done;
-}
-processWrap.addEventListener('change', refreshDone);
-
-// QA QC list - Enhanced for PROCESS principles
-const qaItems=[
-  'Technical peer review complete',
-  'Code and standard compliance verified',
-  'Coordination across disciplines verified',
-  'PM sign off complete',
-  'RFI response within target window',
-  'Submittal review within target window',
-  'Client communication documented',
-  'Change management process followed',
-  'AES standards and templates used',
-  'Lessons learned captured',
-  'Knowledge transfer completed',
-  'Process improvements identified'
-];
-const qaList=$('#qaList');
-qaItems.forEach((text,i)=>{
-  const div=document.createElement('div');
-  div.className='step';
-  div.innerHTML=`<input type="checkbox" id="qa${i}">
-    <div><h4>${text}</h4><p class="muted">Check when complete.</p></div>`;
-  qaList.appendChild(div);
-});
-
-// Milestones
-const timeline=$('#timeline');
-function addMilestone(v={name:'', date:'', deliverable:'', done:false}){
-  const row=document.createElement('div');
-  row.className='milestone';
-  row.innerHTML = `
-    <input type="text" placeholder="Milestone" value="${v.name||''}" />
-    <input type="date" value="${v.date||''}" />
-    <input type="text" placeholder="Deliverable" value="${v.deliverable||''}" />
-    <input type="checkbox" ${v.done?'checked':''} aria-label="Complete">
-    <button class="del" title="Remove">×</button>
-  `;
-  timeline.appendChild(row);
-  updateMsBar();
-}
-$('#addM').addEventListener('click',()=>addMilestone());
-
-timeline.addEventListener('click',(e)=>{
-  if(e.target.classList.contains('del')){
-    e.target.parentElement.remove(); updateMsBar();
-  }
-});
-timeline.addEventListener('change',updateMsBar);
-
-function updateMsBar(){
-  const rows = $$('.milestone', timeline);
-  const total = rows.length || 1;
-  const done = rows.filter(r=>r.querySelector('input[type="checkbox"]').checked).length;
-  const pct = Math.round(done*100/total);
-  $('#msBar').style.width = pct + '%';
-  $('#msBar').title = pct + '% complete';
-}
-
-// KPI sliders
-function bindKPI(id,max=100,mult=1){
-  const rng = $('#'+id);
-  const val = $('#'+id+'_val');
-  const bar = $('#'+id+'_bar');
-  const updater = ()=>{
-    const v = Number(rng.value);
-    val.textContent = max===10 ? v : v;
-    bar.style.width = (max===10 ? v*10 : v) + '%';
-  };
-  rng.addEventListener('input', updater);
-  updater();
-}
-bindKPI('kpi_time');
-bindKPI('kpi_ts');
-bindKPI('kpi_rw');
-bindKPI('kpi_cs',10);
-
-// Save and load
-function snapshot(){
-  return {
-    f:{
-      name:$('#f_name').value,client:$('#f_client').value,no:$('#f_no').value,
-      pm:$('#f_pm').value,type:$('#f_type').value,loc:$('#f_loc').value,summary:$('#f_summary').value,
-      budget:$('#f_budget').value,hours:$('#f_hours').value,wbs:$('#f_wbs').value
-    },
-    scope: $$('#scopeList input').map(x=>x.checked),
-    scope_notes: $('#scope_notes').value,
-    review_schedule: $('#review_schedule').value,
-    stakeholders: $('#stakeholders').value,
-    risk_notes: $('#risk_notes').value,
-    steps: $$('#processSteps input[type="checkbox"]').map(x=>x.checked),
-    qa: $$('#qaList input[type="checkbox"]').map(x=>x.checked),
-    cadence: $('#cadence').value,
-    change: $('#change').value,
-    doc_standards: $('#doc_standards').value,
-    efficiency_tools: $('#efficiency_tools').value,
-    comm_log: $('#comm_log').value,
-    actual_hours: $('#actual_hours').value,
-    efficiency_rating: $('#efficiency_rating').value,
-    optimization_notes: $('#optimization_notes').value,
-    ms: $$('.milestone').map(r=>{
-      const inputs=$$('input',r);
-      return {name:inputs[0].value,date:inputs[1].value,deliverable:inputs[2].value,done:inputs[3].checked};
-    }),
-    kpi:{
-      time:$('#kpi_time').value,ts:$('#kpi_ts').value,rw:$('#kpi_rw').value,cs:$('#kpi_cs').value,
-      standards:$('#kpi_standards').value,improvement:$('#kpi_improvement').value,
-      knowledge:$('#kpi_knowledge').value,team:$('#kpi_team').value
-    },
-    sustainability_notes: $('#sustainability_notes').value,
-    compact: $('#compactTog').checked
-  };
-}
-function apply(data){
-  if(!data) return;
-  $('#f_name').value=data?.f?.name||'';
-  $('#f_client').value=data?.f?.client||'';
-  $('#f_no').value=data?.f?.no||'';
-  $('#f_pm').value=data?.f?.pm||'';
-  $('#f_type').value=data?.f?.type||'';
-  $('#f_loc').value=data?.f?.loc||'';
-  $('#f_summary').value=data?.f?.summary||'';
-  $('#f_budget').value=data?.f?.budget||'';
-  $('#f_hours').value=data?.f?.hours||'';
-  $('#f_wbs').value=data?.f?.wbs||'';
-  $$('#scopeList input').forEach((x,i)=>x.checked=!!data.scope?.[i]);
-  $('#scope_notes').value=data.scope_notes||'';
-  $('#review_schedule').value=data.review_schedule||'';
-  $('#stakeholders').value=data.stakeholders||'';
-  $('#risk_notes').value=data.risk_notes||'';
-  $$('#processSteps input[type="checkbox"]').forEach((x,i)=>x.checked=!!data.steps?.[i]);
-  $$('#qaList input[type="checkbox"]').forEach((x,i)=>x.checked=!!data.qa?.[i]);
-  $('#cadence').value=data.cadence||'';
-  $('#change').value=data.change||'';
-  $('#doc_standards').value=data.doc_standards||'';
-  $('#efficiency_tools').value=data.efficiency_tools||'';
-  $('#comm_log').value=data.comm_log||'';
-  $('#actual_hours').value=data.actual_hours||'';
-  $('#efficiency_rating').value=data.efficiency_rating||'';
-  $('#optimization_notes').value=data.optimization_notes||'';
-  timeline.innerHTML='';
-  (data.ms||[]).forEach(addMilestone);
-  if(!(data.ms||[]).length){ ['Internal kickoff','30 percent review','60 percent review','90 percent QA QC','Issued for Tender','Issued for Construction','Substantial completion'].forEach((n)=>addMilestone({name:n, date:'', deliverable:''})); }
-  $('#kpi_time').value = data.kpi?.time ?? 70;
-  $('#kpi_ts').value = data.kpi?.ts ?? 80;
-  $('#kpi_rw').value = data.kpi?.rw ?? 85;
-  $('#kpi_cs').value = data.kpi?.cs ?? 8;
-  $('#kpi_standards').value = data.kpi?.standards ?? 90;
-  $('#kpi_improvement').value = data.kpi?.improvement ?? 75;
-  $('#kpi_knowledge').value = data.kpi?.knowledge ?? 80;
-  $('#kpi_team').value = data.kpi?.team ?? 8;
-  bindKPI('kpi_time'); bindKPI('kpi_ts'); bindKPI('kpi_rw'); bindKPI('kpi_cs',10);
-  bindKPI('kpi_standards'); bindKPI('kpi_improvement'); bindKPI('kpi_knowledge'); bindKPI('kpi_team',10);
-  $('#sustainability_notes').value=data.sustainability_notes||'';
-  $('#compactTog').checked = !!data.compact;
-  applyCompact();
-  refreshDone(); updateMsBar();
-}
-function saveToLocal(){
-  localStorage.setItem(storeKey, JSON.stringify(snapshot()));
-}
-function loadFromLocal(){
-  const raw = localStorage.getItem(storeKey);
-  if(raw) apply(JSON.parse(raw));
-  else apply({});
-}
-$('#saveBtn').addEventListener('click', ()=>{
-  const data = JSON.stringify(snapshot(), null, 2);
-  const blob = new Blob([data], {type:'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'aes_pep.json';
-  a.click();
-  URL.revokeObjectURL(a.href);
-});
-$('#loadBtn').addEventListener('click', ()=>$('#fileInput').click());
-$('#fileInput').addEventListener('change', (e)=>{
-  const file=e.target.files[0]; if(!file) return;
-  const fr=new FileReader();
-  fr.onload=()=>{ try{ apply(JSON.parse(fr.result)); if($('#autoSave').checked) saveToLocal(); }catch(err){ alert('Could not read file'); } };
-  fr.readAsText(file);
-});
-$('#resetBtn').addEventListener('click', ()=>{ localStorage.removeItem(storeKey); location.reload(); });
-
-// Auto save toggle
-$('#autoSave').addEventListener('change', (e)=>{
-  if(e.target.checked) saveToLocal();
-});
-document.addEventListener('input', (e)=>{
-  if($('#autoSave').checked){
-    saveToLocal();
-  }
-});
-
-// Print
-$('#printBtn').addEventListener('click', ()=>window.print());
-
-// Compact print mode
-function applyCompact(){
-  document.body.classList.toggle('compact', $('#compactTog').checked);
-}
-$('#compactTog').addEventListener('change', applyCompact);
-
-// Provide some defaults on first load
-loadFromLocal();
-if(!localStorage.getItem(storeKey)){
-  // seed defaults for first view
-  apply({});
-}
-
-// Accessibility improvements for keyboard navigation
-$$('button, input, select, textarea').forEach(el=>{ el.addEventListener('keyup', (e)=>{ if(e.key==='Enter' && el.tagName==='BUTTON') el.click(); }); });
-</script>
-
-<style media="print">
-  header .logo{border-color:#111}
-  header{color:#111;background:#fff;border-bottom:2px solid var(--aes-green)}
-  .actions button,.actions input[type="file"], .pill{display:none !important}
-  .footer{border:none}
-  .print-note{display:none}
-  body.compact section{padding:10px}
-  body.compact .step{grid-template-columns: 18px 1fr auto; padding:8px}
-  body.compact .milestone{grid-template-columns: 1fr 120px 140px 28px}
-</style>
+<script src="app.js"></script>
 </body>
 </html>
